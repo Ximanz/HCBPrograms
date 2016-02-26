@@ -1,11 +1,24 @@
 doctype html
-html
+html(ng-app="HCBPrograms")
   head
+    meta(charset='utf8')
+    base(href='/')
     title= title
+    link(rel='stylesheet', href='/bower_components/foundation-sites/dist/foundation.min.css')
     link(rel='stylesheet', href='/stylesheets/app.css')
-    link(rel='stylesheet', href='/stylesheets/foundation.min.css')
   body
-    block content
-    script(src="javascripts/vendor/jquery.min.js")
-    script(src="javascripts/foundation.min.js")
-    script(src="javascripts/app.js")
+    div(class="row")
+      div(class="large-12 columns")
+        div(ng-controller="MainCtrl")
+          div(ng-view class="view-frame")
+
+    script(src="/bower_components/jquery/dist/jquery.min.js")
+    script(src="/bower_components/angular/angular.min.js")
+    script(src="/bower_components/angular-resource/angular-resource.min.js")
+    script(src="/bower_components/angular-route/angular-route.min.js")
+    script(src="/bower_components/foundation-sites/dist/foundation.min.js")
+    script(src="/javascripts/app.js")
+    script(src="/javascripts/controllers/MainCtrl.js")
+    script(src="/javascripts/controllers/HomeCtrl.js")
+    script(src="/javascripts/controllers/ViewCtrl.js")
+    script(src="/javascripts/controllers/ControlCtrl.js")

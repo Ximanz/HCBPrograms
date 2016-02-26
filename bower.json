@@ -1,0 +1,17 @@
+{
+  "name": "HCBPrograms",
+  "description": "Hope Church Brisbane Program Manager Tool",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.4.x",
+    "angular-mocks": "1.4.x",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.1.1",
+    "angular-route": "1.4.x",
+    "angular-resource": "1.4.x",
+    "angular-animate": "1.4.x",
+    "foundation-sites": "^6.1.2"
+  }
+}

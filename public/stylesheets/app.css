@@ -8,6 +8,7 @@ a {
 }
 
 .connection-panel {
-  top: 250px;
-  margin-top: 250px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }

@@ -1,6 +1,10 @@
-extends layout
-
-block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+doctype html
+html(ng-app="HCBPrograms")
+  head
+    meta(charset='utf8')
+    base(href='/')
+    title= title
+  body
+    h1= message
+    h2= error.status
+    pre #{error.stack}
