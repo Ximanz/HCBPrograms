@@ -1,18 +1,17 @@
-div(class="row expanded collapse connection-panel")
-  div(class="small-11 small-centered medium-8 large-5 columns")
-    div(class="callout")
-      h1(class="text-center")= title
-      form
-        div(class="row")
-          div(class="medium-6 columns")
-            label Screen Name
-              input(type="text")
-          div(class="medium-6 columns")
-            label Password
-              input(type="password")
-        div(class="row")
-          div(class="small-10 small-centered columns")
-            h4(class="subheader text-center") Connect as..
-            div(class="expanded button-group")
-              a(class="large button") Controller
-              a(class="large button success") Viewer
+div.row.expanded.collapse.connection-panel
+  div.small-11.small-centered.medium-8.large-5.columns
+    div.callout
+      h1.text-center= title
+      div.row
+        div.medium-6.columns
+          label Screen Name
+            input(ng-model="screenName" type="text" name="screenName" require autofocus)
+        div.medium-6.columns
+          label Password
+            input(ng-model="password" type="password")
+      div.row
+        div.small-10.small-centered.columns
+          h4.subheader.text-center Connect as..
+          div.expanded.button-group
+            a.large.button(ng-click="connect('controller')") Controller
+            a.large.button(ng-click="connect('viewer')") success Viewer
