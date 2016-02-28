@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location) {
+angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location, AuthFactory) {
     $scope.screenName = "Program Manager";
     $scope.password = "";
 
@@ -18,6 +18,14 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location)
             console.log("failure", response);
         }
 
-
+        AuthFactory
+            .connect(screenName, password)
+            .then(function(response){
+                if (AuthFactory.isConnected()) {
+                    success(response);
+                } else {
+                    failure(response);
+                }
+            })
     }
 });

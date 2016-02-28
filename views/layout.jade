@@ -7,10 +7,11 @@ html(ng-app="HCBPrograms")
     link(rel='stylesheet', href='/bower_components/foundation-sites/dist/foundation.min.css')
     link(rel='stylesheet', href='/stylesheets/app.css')
   body
-    div(class="row")
-      div(class="large-12 columns")
-        div(ng-controller="MainCtrl")
-          div(ng-view class="view-frame")
+    div(id="full-frame")
+      div.row
+        div.large-12.columns
+          div(ng-controller="MainCtrl")
+            div(ng-view class="view-frame")
 
     script(src="/bower_components/jquery/dist/jquery.min.js")
     script(src="/bower_components/angular/angular.min.js")

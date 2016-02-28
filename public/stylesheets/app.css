@@ -1,6 +1,15 @@
-body {
-  padding: 50px;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#full-frame {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
 }
 
 a {
