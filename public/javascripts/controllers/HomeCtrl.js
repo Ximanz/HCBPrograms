@@ -7,6 +7,9 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location,
 
         function success(response) {
             console.log("success", response);
+
+            $scope.$emit('connection-approved');
+
             if (role == 'controller') {
                 $location.path("/control");
             } else {
@@ -19,7 +22,7 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location,
         }
 
         AuthFactory
-            .connect(screenName, password)
+            .connect($scope.screenName, $scope.password)
             .then(function(response){
                 if (AuthFactory.isConnected()) {
                     success(response);

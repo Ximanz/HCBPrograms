@@ -8,12 +8,17 @@
             connect: function(screenName, password) {
                 return $http
                     .post('/connect', {
-                        username: screenName,
+                        screenName: screenName,
                         password: password
                     })
                     .then(function(res){
-                        SessionFactory.setUser(res.user);
-                        SessionFactory.setAccessToken(res.token)
+                        SessionFactory.setUser(res.data.user);
+                        SessionFactory.setAccessToken(res.data.token);
+                        SessionFactory.setExpiry(res.data.expires);
+                        return res;
+                    },
+                    function(res){
+                        return res;
                     });
             },
 
@@ -32,6 +37,7 @@
         return {
             _user: JSON.parse(StorageFactory.getLocal('session.user')),
             _accessToken: JSON.parse(StorageFactory.getLocal('session.accessToken')),
+            _expiry: JSON.parse(StorageFactory.getLocal('session.expiry')),
 
             getUser: function() {
                 return this._user;
@@ -49,7 +55,17 @@
 
             setAccessToken: function(token){
                 this._accessToken = token;
-                StorageFactory.setLocal('session.accessToken', token);
+                StorageFactory.setLocal('session.accessToken', JSON.stringify(token));
+                return this;
+            },
+
+            getExpiry: function(){
+                return this._expiry;
+            },
+
+            setExpiry: function(expiry){
+                this._expiry = expiry;
+                StorageFactory.setLocal('session.expiry', JSON.stringify(expiry));
                 return this;
             },
 
@@ -59,6 +75,7 @@
             destroy: function destroy(){
                 this.setUser(null);
                 this.setAccessToken(null);
+                this.setExpiry(null);
             }
         }
     }
