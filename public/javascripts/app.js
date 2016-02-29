@@ -8,6 +8,6 @@ angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', fun
     $routeProvider
         .when("/", { templateUrl: "partials/index.jade", controller: "HomeCtrl" })
         .when("/view", { templateUrl: "partials/view.jade", controller: "ViewCtrl" })
-        .when("/control/:id", { templateUrl: "partials/control.jade", controller: "ControlCtrl" })
+        .when("/control", { templateUrl: "partials/control.jade", controller: "ControlCtrl" })
         .otherwise({ redirectTo: "/" });
 }]);
