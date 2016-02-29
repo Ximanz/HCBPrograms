@@ -12,6 +12,7 @@
     "angular-route": "1.4.x",
     "angular-resource": "1.4.x",
     "angular-animate": "1.4.x",
-    "foundation-sites": "^6.1.2"
+    "foundation-sites": "^6.1.2",
+    "angular-ui-notification": "^0.1.0"
   }
 }

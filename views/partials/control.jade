@@ -1,3 +1,6 @@
-div(class="off-canvas-wrapper")
-    div(class="off-canvas-wrapper-inner" data-off-canvas-wrapper)
-div(class="top-bar")
+div.off-canvas-wrapper(ng-controller="ControlCtrl")
+    div.off-canvas-wrapper-inner(data-off-canvas-wrapper)
+        div.off-canvas.position-left(id="offCanvasMenuLeft" data-off-canvas)
+        div.off-canvas.position-right(id="offCanvasMenuRight" data-off-canvas)
+        div.off-canvas-content(data-off-canvas-content)
+            div.top-bar.expanded

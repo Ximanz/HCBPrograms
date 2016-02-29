@@ -5,18 +5,17 @@ html(ng-app="HCBPrograms")
     base(href='/')
     title= title
     link(rel='stylesheet', href='/bower_components/foundation-sites/dist/foundation.min.css')
+    link(rel='stylesheet', href='/bower_components/angular-ui-notification/dist/angular-ui-notification.min.css')
     link(rel='stylesheet', href='/stylesheets/app.css')
-  body
-    div(id="full-frame")
-      div.row
-        div.large-12.columns
-          div(ng-controller="MainCtrl")
-            div(ng-view class="view-frame")
+
+  body(ng-controller="MainCtrl")
+    div.full-frame(ng-view)
 
     script(src="/bower_components/jquery/dist/jquery.min.js")
     script(src="/bower_components/angular/angular.min.js")
     script(src="/bower_components/angular-resource/angular-resource.min.js")
     script(src="/bower_components/angular-route/angular-route.min.js")
+    script(src="/bower_components/angular-ui-notification/dist/angular-ui-notification.min.js")
     script(src="/bower_components/foundation-sites/dist/foundation.min.js")
     script(src="/javascripts/app.js")
     script(src="/socket.io/socket.io.js")

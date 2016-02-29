@@ -6,7 +6,7 @@ html, body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-#full-frame {
+.full-frame {
   height: 100%;
   width: 100%;
   overflow: auto;
