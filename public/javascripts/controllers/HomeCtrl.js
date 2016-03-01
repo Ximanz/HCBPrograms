@@ -1,6 +1,22 @@
-angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location, AuthFactory) {
-    $scope.screenName = "Program Manager";
-    $scope.password = "";
+angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location, AuthFactory, SessionFactory) {
+    var resumeState = SessionFactory.getResumeState();
+    if (resumeState != undefined) {
+        switch (resumeState.role) {
+            case 'control':
+                $location.path("/control");
+                break;
+            case 'view':
+                $location.path("/view");
+                break;
+        }
+    }
+    SessionFactory.setResumeState({role: 'none'});
+
+    $scope.screenName = SessionFactory.getScreenName();
+    $scope.password = SessionFactory.getPassword();
+
+    if ($scope.screenName == undefined || $scope.screenName == "")
+        $scope.screenName = "Program Manager";
 
     $scope.connect = function(role) {
         console.log("connect");

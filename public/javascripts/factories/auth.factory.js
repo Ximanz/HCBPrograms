@@ -38,6 +38,9 @@
             _user: JSON.parse(StorageFactory.getLocal('session.user')),
             _accessToken: JSON.parse(StorageFactory.getLocal('session.accessToken')),
             _expiry: JSON.parse(StorageFactory.getLocal('session.expiry')),
+            _resumeState: JSON.parse(StorageFactory.getLocal('session.resumeState')),
+            _screenName: JSON.parse(StorageFactory.getSession('session.screenName')),
+            _password: JSON.parse(StorageFactory.getSession('session.password')),
 
             getUser: function() {
                 return this._user;
@@ -66,6 +69,36 @@
             setExpiry: function(expiry){
                 this._expiry = expiry;
                 StorageFactory.setLocal('session.expiry', JSON.stringify(expiry));
+                return this;
+            },
+
+            getResumeState: function(){
+                return this._resumeState;
+            },
+
+            setResumeState: function(resumeState){
+                this._resumeState = resumeState;
+                StorageFactory.setLocal('session.resumeState', JSON.stringify(resumeState));
+                return this;
+            },
+
+            getScreenName: function(){
+                return this._screenName;
+            },
+
+            setScreenName: function(screenName){
+                this._screenName = screenName;
+                StorageFactory.setSession('session.screenName', JSON.stringify(screenName));
+                return this;
+            },
+
+            getPassword: function(){
+                return this._password;
+            },
+
+            setPassword: function(password){
+                this._password = password;
+                StorageFactory.setSession('session.password', JSON.stringify(password));
                 return this;
             },
 

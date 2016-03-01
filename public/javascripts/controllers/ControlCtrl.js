@@ -1,2 +1,5 @@
-angular.module('HCBPrograms').controller("ControlCtrl", function($scope) {
+angular.module('HCBPrograms').controller("ControlCtrl", function($scope, SessionFactory) {
+    SessionFactory.setResumeState({role: 'control'});
+
+
 });

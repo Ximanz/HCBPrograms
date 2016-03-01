@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("MainCtrl", function($scope, SocketFactory) {
+angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location, SocketFactory) {
     $scope.$on('connection-approved', function() {
         SocketFactory
             .initialise()
@@ -8,6 +8,7 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, SocketFact
                 },
                 function(){
                     console.log("Main controller socket failed");
+                    $location.path("/");
                 }
             );
     })
