@@ -1,6 +1,8 @@
-div.off-canvas-wrapper(ng-controller="ControlCtrl")
-    div.off-canvas-wrapper-inner(data-off-canvas-wrapper)
-        div.off-canvas.position-left(id="offCanvasMenuLeft" data-off-canvas)
-        div.off-canvas.position-right(id="offCanvasMenuRight" data-off-canvas)
-        div.off-canvas-content(data-off-canvas-content)
-            div.top-bar.expanded
+div.title-bar.expanded
+    div.title-bar-middle.text-center
+        span.title-bar-title Hope Church Brisbane Service Programs
+    div.title-bar-left
+        button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
+    div.title-bar-right
+        button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
+

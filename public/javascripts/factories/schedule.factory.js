@@ -12,32 +12,41 @@
             });
         };
 
-        Schedule.prototype.firstItem = function() {
-            var sequence = this.scheduleItems.reduce(function(sequence, scheduleItem) {
-                return Math.min(sequence, scheduleItem.sequence);
+        Schedule.prototype.addItem = function(name, duration) {
+            this.scheduleItems.push({
+                name: name,
+                duration: duration,
+                live: false
             });
 
-            return this.scheduleItems.find(function(scheduleItem){
-                return scheduleItem.sequence == sequence;
-            })
+            return this;
         };
 
-        Schedule.prototype.lastItem = function() {
-            var sequence = this.scheduleItems.reduce(function(sequence, scheduleItem) {
-                return Math.max(sequence, scheduleItem.sequence);
+        Schedule.prototype.insertItem = function(index, name, duration) {
+            this.scheduleItems.splice(index, 0, {
+                name: name,
+                duration: duration,
+                live: false
             });
 
-            return this.scheduleItems.find(function(scheduleItem){
-                return scheduleItem.sequence == sequence;
-            })
-        };
-
-        Schedule.prototype.add = function(index, name, duration) {
+            return this;
 
         };
+
+        Schedule.prototype.removeItem = function(index) {
+            this.scheduleItems.splice(index, 1);
+
+            return this;
+        };
+
+        var _schedule;
 
         return {
+            getSchedule: function(finishTime) {
+                _schedule = _schedule || new Schedule(finishTime);
 
+                return _schedule;
+            }
         }
     }
 

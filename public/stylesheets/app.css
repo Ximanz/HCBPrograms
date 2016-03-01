@@ -22,3 +22,12 @@ a {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.title-bar {
+  min-height: 32px;
+}
+
+  .title-bar>.title-bar-middle {
+    position: absolute;
+    width: 100%;
+  }

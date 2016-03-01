@@ -3,9 +3,11 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location,
     if (resumeState != undefined) {
         switch (resumeState.role) {
             case 'control':
+                $scope.$emit('connection-approved');
                 $location.path("/control");
                 break;
             case 'view':
+                $scope.$emit('connection-approved');
                 $location.path("/view");
                 break;
         }
