@@ -2,7 +2,7 @@ var Schedule = require('../../models/schedule');
 
 var schedules = {
     readAll: function(req, res) {
-        Schedule.find().exec(function (err, schedules) {
+        Schedule.find().project({_id: 0, name: 1}).exec(function (err, schedules) {
             if (err) {
                 console.log(err);
                 res.json({ "status": 500, "messages": [{ "type": "exception", "content": err }] });
@@ -19,7 +19,7 @@ var schedules = {
     },
 
     readOne: function(req, res) {
-        Schedule.findById(req.params.id).exec(function (err, schedule) {
+        Schedule.findOne({name: req.params.name}).exec(function (err, schedule) {
             if (err) {
                 console.log(err);
                 res.json({ "status": 500, "messages": [{ "type": "exception", "content": err }] });
@@ -73,7 +73,7 @@ var schedules = {
     },
 
     deleteOne: function(req, res) {
-        Schedule.findById(req.params.id, function (err, schedule) {
+        Schedule.findOne({name: req.params.name}, function (err, schedule) {
             if (err) {
                 console.log(err);
                 res.json({ "status": 500, "messages": [{ "type": "exception", "content": err }] });

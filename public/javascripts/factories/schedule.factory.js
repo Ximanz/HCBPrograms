@@ -1,7 +1,8 @@
 (function (angular) {
-    function ScheduleFactory($http) {
+    function ScheduleFactory($http, Notification) {
         // Schedule
-        function Schedule(finishTime) {
+        function Schedule(name, finishTime) {
+            this.name = name;
             this.finishTime = finishTime || new Date().setHours(18);
             this.scheduleItems = [];
         }
@@ -44,26 +45,65 @@
             this.finishTime = new Date(finishTime);
         };
 
+        Schedule.prototype.merge = function(source) {
+            _schedule.initialise(source.finishTime, clear);
+
+            _schedule.name = source.name;
+            _schedule.scheduleItems = source.scheduleItems.slice();
+
+            return this;
+        };
+
         var _schedule;
 
         return {
-            getSchedule: function(callback) {
-                _schedule = _schedule || new Schedule();
+            getSchedule: function(name) {
+                _schedule = _schedule || new Schedule(name);
 
-                callback(_schedule);
+                return _schedule;
             },
-            loadSchedule: function(templateId, successCallback, errorCallback) {
-                $http.get('/api/schedule/' + templateId)
-                    .then(successCallback(response), errorCallback(response));
+            loadSchedule: function(name) {
+                $http.get('/api/schedule/' + name)
+                    .then(
+                        function(response){
+                            _schedule.merge(response);
+                        },
+                        function(response){
+                            Notification.error({title: "Unable to load schedule", message: response})
+                        }
+                    );
             },
-            getAllSchedules: function(successCallback, errorCallback) {
+            getScheduleList: function(successCallback) {
                 $http.get('/api/schedule')
-                    .then(successCallback(response), errorCallback(response));
+                    .then(
+                        successCallback(response),
+                        function(response){
+                            Notification.error({title: "Unable to load schedule list", message: response})
+                        }
+                    );
+            },
+            saveSchedule: function(successCallback) {
+                $http.post('/api/schedule/', _schedule)
+                    .then(
+                        successCallback(response),
+                        function(response){
+                            Notification.error({title: "Unable to save schedule", message: response})
+                        }
+                    );
+            },
+            deleteSchedule: function(name, successCallback) {
+                $http.get('/api/schedule/' + templateId)
+                    .then(
+                        successCallback(response),
+                        function(response){
+                            Notification.error({title: "Unable to save schedule", message: response})
+                        }
+                    );
             }
         }
     }
 
-    ScheduleFactory.$inject = ['$http'];
+    ScheduleFactory.$inject = ['$http', "Notification"];
 
     angular
         .module('HCBPrograms')
