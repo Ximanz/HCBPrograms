@@ -1,5 +1,6 @@
 function init() {
     var vars = [
+        "MONGOLAB_URI",
         "API_SECRET",
         "PASSWORD"
     ];

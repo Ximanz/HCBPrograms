@@ -30,7 +30,6 @@
             });
 
             return this;
-
         };
 
         Schedule.prototype.removeItem = function(index) {
@@ -39,19 +38,28 @@
             return this;
         };
 
+        Schedule.prototype.initialise = function(finishTime, clear) {
+            if (clear) this.scheduleItems.length = 0;
+
+            this.finishTime = new Date(finishTime);
+        };
+
         var _schedule;
 
         return {
-            getSchedule: function() {
+            getSchedule: function(callback) {
                 _schedule = _schedule || new Schedule();
 
-                return _schedule;
+                callback(_schedule);
             },
-            getNewSchedule: function(finishTime, templateId) {
-                _schedule = new Schedule(finishTime);
-
-                return _schedule;
+            loadSchedule: function(templateId, successCallback, errorCallback) {
+                $http.get('/api/schedule/' + templateId)
+                    .then(successCallback(response), errorCallback(response));
             },
+            getAllSchedules: function(successCallback, errorCallback) {
+                $http.get('/api/schedule')
+                    .then(successCallback(response), errorCallback(response));
+            }
         }
     }
 

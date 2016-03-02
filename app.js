@@ -5,7 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var config = require('./config').init();
+
 var routes = require('./routes/index');
+
+env = process.env.NODE_ENV || 'development';
+
+// Connect to the database
+var mongoose = require('mongoose');
+mongoose.connect(config.MONGOLAB_URI);
 
 var app = express();
 
@@ -20,6 +28,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Auth Middleware - This will check if the token is valid
+// Only the requests that start with /api/v1/* will be checked for the token.
+// Any URL's that do not follow the below pattern should be avoided unless you
+// are sure that authentication is not needed
+app.all('/api/*', [require('./routes/auth/validateRequest.js')]);
 
 app.use('/', routes);
 

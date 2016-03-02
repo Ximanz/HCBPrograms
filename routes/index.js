@@ -1,4 +1,6 @@
 var express = require('express');
+var scheduleAPI = require('./api/schedule.js');
+
 var router = express.Router();
 
 var auth = require('./auth/auth.js');
@@ -15,5 +17,10 @@ router.get('/partials/:name', function(req, res) {
 
 /* Handle Login POST */
 router.post('/connect', auth.connect);
+
+router.get('/api/schedule', scheduleAPI.readAll);
+router.get('/api/schedule/:id', scheduleAPI.readOne);
+router.post('/api/schedule', scheduleAPI.createOne);
+router.delete('/api/schedule/:id', scheduleAPI.deleteOne);
 
 module.exports = router;
