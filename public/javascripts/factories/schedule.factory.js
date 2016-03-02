@@ -42,11 +42,16 @@
         var _schedule;
 
         return {
-            getSchedule: function(finishTime) {
-                _schedule = _schedule || new Schedule(finishTime);
+            getSchedule: function() {
+                _schedule = _schedule || new Schedule();
 
                 return _schedule;
-            }
+            },
+            getNewSchedule: function(finishTime, templateId) {
+                _schedule = new Schedule(finishTime);
+
+                return _schedule;
+            },
         }
     }
 
