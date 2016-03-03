@@ -21,3 +21,14 @@ angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', 'No
         templateUrl: "partials/notification.jade"
     })
 }]);
+
+angular.module('HCBPrograms').run(function($rootScope, $timeout, $location) {
+    $rootScope.$on('$routeChangeSuccess', function () {
+        if ($location.path() == '/control') {
+            $timeout(function(){
+                $('#offCanvasLeft').foundation();
+                $('#offCanvasRight').foundation();
+            }, 100);
+        }
+    });
+});

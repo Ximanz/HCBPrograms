@@ -8,14 +8,9 @@ html(ng-app="HCBPrograms")
     link(rel='stylesheet', href='/bower_components/angular-ui-notification/dist/angular-ui-notification.min.css')
     link(rel='stylesheet', href='/stylesheets/app.css')
 
-  body(ng-controller="MainCtrl")
+  body(ng-controller="MainCtrl" )
     div.off-canvas-wrapper
-      div.off-canvas-wrapper-inner(data-off-canvas-wrapper='')
-        div.off-canvas.position-left(id="offCanvasLeft" data-off-canvas='')
-          div.row
-        div.off-canvas.position-right(id="offCanvasRight" data-off-canvas='' data-position="right")
-          div.row
-        div.off-canvas-content(data-off-canvas-content='' ng-view)
+      div.off-canvas-wrapper-inner.full-frame(data-off-canvas-wrapper='' ng-view)
 
     script(src="/bower_components/jquery/dist/jquery.min.js")
     script(src="/bower_components/angular/angular.min.js")

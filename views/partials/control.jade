@@ -1,8 +1,11 @@
-div.title-bar.expanded
-    div.title-bar-middle.text-center
+div.off-canvas.position-left.reveal-for-medium(id="offCanvasLeft" data-off-canvas='')
+    div.row
+div.off-canvas.position-right.reveal-for-large(id="offCanvasRight" data-off-canvas='' data-position="right")
+    div.row
+div.off-canvas-content(data-off-canvas-content='')
+    div.title-bar.expanded.text-center
         span.title-bar-title Hope Church Brisbane Service Programs
-    div.title-bar-left
-        button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
-    div.title-bar-right
-        button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
-
+        div.title-bar-left
+            button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
+        div.title-bar-right
+            button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")

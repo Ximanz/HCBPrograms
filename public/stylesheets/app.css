@@ -26,8 +26,3 @@ a {
 .title-bar {
   min-height: 32px;
 }
-
-  .title-bar>.title-bar-middle {
-    position: absolute;
-    width: 100%;
-  }
