@@ -1,5 +1,12 @@
 div.off-canvas.position-left.reveal-for-medium(id="offCanvasLeft" data-off-canvas='')
     div.row
+        div.small-12.columns.schedule-name
+            label schedule name
+                input(type='text' ng-model="schedule.name")
+    div.row
+        div.small-12.columns.schedule-item-container
+            accordion(close-others=true)
+                accordion-group(heading="{{scheduleItem.name}}" ng-repeat="scheduleItem in schedule.scheduleItems")
 div.off-canvas.position-right.reveal-for-large(id="offCanvasRight" data-off-canvas='' data-position="right")
     div.row
 div.off-canvas-content(data-off-canvas-content='')

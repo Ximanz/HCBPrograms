@@ -5,7 +5,8 @@
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -20,5 +21,15 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.7",
+    "karma-opera-launcher": "^0.3.0",
+    "karma-safari-launcher": "^0.1.1"
   }
 }
