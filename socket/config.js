@@ -18,6 +18,11 @@ module.exports = function (io) {
         var authenticate = function (data) {
             clearTimeout(auth_timeout);
 
+            if (!data.token || data.token.length == 0) {
+                socket.disconnect('missing token');
+                return;
+            }
+
             var decoded = jwt.decode(data.token, options.secret);
 
             if (decoded == undefined || !decoded.exp) {

@@ -10,8 +10,7 @@ html(ng-app="HCBPrograms")
     link(rel='stylesheet', href='/stylesheets/app.css')
 
   body(ng-controller="MainCtrl")
-    div.off-canvas-wrapper
-      div.off-canvas-wrapper-inner.full-frame(data-off-canvas-wrapper='' ng-view)
+    div.off-canvas-wrapper.full-height.scroll-y(ng-view)
 
     script(src="/bower_components/jquery/dist/jquery.min.js")
     script(src="/bower_components/angular/angular.min.js")
@@ -31,3 +30,4 @@ html(ng-app="HCBPrograms")
     script(src="/javascripts/controllers/HomeCtrl.js")
     script(src="/javascripts/controllers/ViewCtrl.js")
     script(src="/javascripts/controllers/ControlCtrl.js")
+    script(src="/javascripts/controllers/AddScheduleItemPopupCtrl.js")

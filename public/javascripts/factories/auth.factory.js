@@ -92,16 +92,6 @@
                 return this;
             },
 
-            getPassword: function(){
-                return this._password;
-            },
-
-            setPassword: function(password){
-                this._password = password;
-                StorageFactory.setSession('session.password', JSON.stringify(password));
-                return this;
-            },
-
             /**
              * Destroy session
              */
@@ -109,6 +99,7 @@
                 this.setUser(null);
                 this.setAccessToken(null);
                 this.setExpiry(null);
+                this.setResumeState(null);
             }
         }
     }

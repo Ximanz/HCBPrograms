@@ -25,7 +25,7 @@
                     console.log('socket is jwt authenticated');
                 });
 
-                _socket.on('disconnect', function () {
+                _socket.on('disconnect', function (data) {
                     socketDeferred.reject(false);
                     console.log('socket is rejected');
                 });

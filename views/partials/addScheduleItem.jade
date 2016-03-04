@@ -1,0 +1,14 @@
+h4.subheader New Schedule Item
+div.row.new-schedule-item-popup
+    div.small-12.small-centered.columns
+        div.input-group
+            span.input-group-label Name
+            input.input-group-field(type="text" ng-model="scheduleItem.name")
+        div.input-group
+            span.input-group-label Duration
+            input.input-group-field(type="number" ng-model="scheduleItem.duration")
+div.row
+    div.small-12.small-centered.columns
+        button.button(ng-click="add()") Add
+button.close-button(type="button" ng-click="cancel()")
+    span &times;

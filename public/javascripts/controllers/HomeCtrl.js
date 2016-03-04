@@ -12,10 +12,10 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location,
                 break;
         }
     }
+
     SessionFactory.setResumeState({role: 'none'});
 
     $scope.screenName = SessionFactory.getScreenName();
-    $scope.password = SessionFactory.getPassword();
 
     if ($scope.screenName == undefined || $scope.screenName == "")
         $scope.screenName = "Program Manager";

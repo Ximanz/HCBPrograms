@@ -6,14 +6,21 @@ html, body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-.full-frame {
+.full-height {
   height: 100%;
-  width: 100%;
-  overflow: auto;
+}
+
+.scroll-y {
+  overflow-y: auto;
 }
 
 a {
   color: #00B7FF;
+}
+
+.sunken {
+  font-size: 2em;
+  text-shadow: 1px 1px 2px #252525
 }
 
 .connection-panel {
@@ -27,13 +34,29 @@ a {
   min-height: 32px;
 }
 
+.off-canvas {
+  height: 100%;
+  background-color: transparent;
+}
+
 #schedule-menu-dropdown {
   padding: 0;
-  width: auto;
-  background-color: transparent;
+  width: 150px;
+  background-color: white;
   border: none;
 }
 
 #schedule-menu-dropdown .button {
-  margin-bottom: 1px;
+  margin-bottom: 2px;
+  width: 150px;
+}
+
+#schedule-menu-dropdown span {
+  margin-left: 0.3em;
+  font-size: 2em;
+}
+
+.new-schedule-item-popup .input-group-label {
+  min-width: 90px;
+  text-align: left;
 }

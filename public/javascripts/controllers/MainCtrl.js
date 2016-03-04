@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location, SocketFactory) {
+angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location, SocketFactory, SessionFactory, Notification) {
     $scope.socketConnected = false;
 
     $scope.$on('connection-approved', function() {
@@ -11,6 +11,8 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location,
                 },
                 function(){
                     console.log("Main controller socket failed");
+                    SessionFactory.destroy();
+                    Notification.error({message: "There was a problem connecting to the server, please try logging in again."});
                     $location.path("/");
                     $scope.socketConnected = false;
                 }

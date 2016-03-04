@@ -17,8 +17,8 @@ angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', '$h
         startRight: 10,
         verticalSpacing: 20,
         horizontalSpacing: 20,
-        positionX: 'left',
-        positionY: 'bottom',
+        positionX: 'top',
+        positionY: 'right',
         //templateUrl: "partials/notification.jade"
     });
 }]);
