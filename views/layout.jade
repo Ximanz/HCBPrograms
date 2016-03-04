@@ -6,9 +6,10 @@ html(ng-app="HCBPrograms")
     title= title
     link(rel='stylesheet', href='/bower_components/foundation-sites/dist/foundation.min.css')
     link(rel='stylesheet', href='/bower_components/angular-ui-notification/dist/angular-ui-notification.min.css')
+    link(rel='stylesheet', href='/thirdparty/foundation-icons/foundation-icons.css')
     link(rel='stylesheet', href='/stylesheets/app.css')
 
-  body(ng-controller="MainCtrl" )
+  body(ng-controller="MainCtrl")
     div.off-canvas-wrapper
       div.off-canvas-wrapper-inner.full-frame(data-off-canvas-wrapper='' ng-view)
 
@@ -18,7 +19,7 @@ html(ng-app="HCBPrograms")
     script(src="/bower_components/angular-route/angular-route.min.js")
     script(src="/bower_components/angular-ui-notification/dist/angular-ui-notification.min.js")
     script(src="/bower_components/foundation-sites/dist/foundation.min.js")
-    script(src="/thirdparty/mm-foundation-0.9.0.min.js")
+    script(src="/thirdparty/mm-foundation-tpls-0.9.0.min.js")
     script(src="/socket.io/socket.io.js")
     script(src="/javascripts/app.js")
     script(src="/javascripts/factories/utility.factory.js")

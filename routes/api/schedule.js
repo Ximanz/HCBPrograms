@@ -2,20 +2,23 @@ var Schedule = require('../../models/schedule');
 
 var schedules = {
     readAll: function(req, res) {
-        Schedule.find().project({_id: 0, name: 1}).exec(function (err, schedules) {
-            if (err) {
-                console.log(err);
-                res.json({ "status": 500, "messages": [{ "type": "exception", "content": err }] });
-            }
+        Schedule
+            .aggregate(
+                { $project: { _id: 0, name: 1 } })
+            .exec(function (err, schedules) {
+                if (err) {
+                    console.log(err);
+                    res.json({ "status": 500, "messages": [{ "type": "exception", "content": err }] });
+                }
 
-            if (!schedules) {
-                console.log('No schedules found.');
-                res.json({ "status": 404, "messages": [{ "type": "error", "content": "No schedules found" }] });
-            } else {
-                console.log('Schedules found.');
-                res.json({ "status": 200, "data": schedules });
-            }
-        });
+                if (!schedules) {
+                    console.log('No schedules found.');
+                    res.json({ "status": 404, "messages": [{ "type": "error", "content": "No schedules found" }] });
+                } else {
+                    console.log('Schedules found.');
+                    res.json(schedules);
+                }
+            });
     },
 
     readOne: function(req, res) {
@@ -30,7 +33,7 @@ var schedules = {
                 res.json({ "status": 404, "messages": [{ "type": "error", "content": "Schedule cannot be found" }] });
             } else {
                 console.log('Schedule found.');
-                res.json({ "status": 200, "data": schedule });
+                res.json(schedule);
             }
         });
     },

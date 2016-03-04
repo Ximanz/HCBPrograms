@@ -3,7 +3,7 @@
         // Schedule
         function Schedule(name, finishTime) {
             this.name = name;
-            this.finishTime = finishTime || new Date().setHours(18);
+            this.finishTime = finishTime || new Date(new Date().setHours(18,0,0,0));
             this.scheduleItems = [];
         }
 
@@ -76,7 +76,9 @@
             getScheduleList: function(successCallback) {
                 $http.get('/api/schedule')
                     .then(
-                        successCallback(response),
+                        function(response) {
+                            successCallback(response);
+                        },
                         function(response){
                             Notification.error({title: "Unable to load schedule list", message: response})
                         }
@@ -85,7 +87,9 @@
             saveSchedule: function(successCallback) {
                 $http.post('/api/schedule/', _schedule)
                     .then(
-                        successCallback(response),
+                        function(response) {
+                            successCallback(response);
+                        },
                         function(response){
                             Notification.error({title: "Unable to save schedule", message: response})
                         }
@@ -94,7 +98,9 @@
             deleteSchedule: function(name, successCallback) {
                 $http.get('/api/schedule/' + templateId)
                     .then(
-                        successCallback(response),
+                        function(response) {
+                            successCallback(response);
+                        },
                         function(response){
                             Notification.error({title: "Unable to save schedule", message: response})
                         }

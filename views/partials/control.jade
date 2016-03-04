@@ -1,12 +1,50 @@
 div.off-canvas.position-left.reveal-for-medium(id="offCanvasLeft" data-off-canvas='')
     div.row
+        div.small-12.columns.schedule-menu
+            button.button(type="button" data-toggle="schedule-menu-dropdown")
+                i.fi-list
+            div.dropdown-pane(id="schedule-menu-dropdown" data-dropdown data-auto-focus="true")
+                div.row
+                    div.small-12.columns
+                        button.button.expanded(type="button" ng-click="loadSchedules()" data-open="schedule-list-popup")
+                            i.fi-thumbnails
+                            |  Load
+                    div.small-12.columns
+                        button.button.expanded(type="button" ng-click="saveSchedule()")
+                            i.fi-save
+                            |  Save
+    div.row
         div.small-12.columns.schedule-name
             label schedule name
                 input(type='text' ng-model="schedule.name")
+        div.small-12.columns.schedule-finish-time
+            div.input-group
+                span.input-group-label finish time
+                input.input-group-field(type='time' ng-model="schedule.finishTime" ng-model-options="{ updateOn: 'blur' }")
     div.row
         div.small-12.columns.schedule-item-container
             accordion(close-others=true)
                 accordion-group(heading="{{scheduleItem.name}}" ng-repeat="scheduleItem in schedule.scheduleItems")
+                    div.schedule-item-finish-time
+                        span.label {{scheduleItem.timeLabel}}
+                    a.button.insert-schedule-item-btn(data-schedule-index="{{$index}}")
+                        i.fi-add
+                        | Insert new item
+                    h2 {{scheduleItem.duration}}
+    div.row
+        div.small-12.columns.add-new-schedule-item
+    div.full.reveal(id="schedule-list-popup" data-reveal=true data-animation-in="slide-in" data-animation-out="slide-out")
+        h3 Stored Schedules
+        div.row.small-up-1.medium-up-3.large-up-5.schedule-list-grid
+            div.column.schedule-list-item(ng-repeat="schedule in scheduleList")
+                h5 {{schedule.name}}
+                span.label {{schedule.scheduleItems.length}} Items
+                button.success(type="button" data-schedule-name="{{schedule.name}}") Open
+                button.close-button.alert(type="button" data-schedule-name="{{schedule.name}}")
+                    i.fi-x
+        h1.subheader(ng-hide="scheduleList.length > 0") Couldn't find any saved schedules
+        button.close-button(data-close=true type="button")
+            span(aria-hidden=false) &times;
 div.off-canvas.position-right.reveal-for-large(id="offCanvasRight" data-off-canvas='' data-position="right")
     div.row
 div.off-canvas-content(data-off-canvas-content='')

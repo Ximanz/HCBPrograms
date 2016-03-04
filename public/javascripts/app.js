@@ -3,13 +3,14 @@ $(document).foundation();
 // Declare app level module which depends on filters, and services
 var app = angular.module('HCBPrograms', ['ngResource', 'ngRoute', 'ui-notification', 'mm.foundation']);
 
-angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', 'NotificationProvider', function($routeProvider, $locationProvider, NotificationProvider) {
+angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', '$httpProvider', 'NotificationProvider', function($routeProvider, $locationProvider, $httpProvider, NotificationProvider) {
     $locationProvider.html5Mode(true);
     $routeProvider
         .when("/", { templateUrl: "partials/index.jade", controller: "HomeCtrl" })
         .when("/view", { templateUrl: "partials/view.jade", controller: "ViewCtrl" })
         .when("/control", { templateUrl: "partials/control.jade", controller: "ControlCtrl" })
         .otherwise({ redirectTo: "/" });
+    $httpProvider.interceptors.push('TokenInterceptor');
     NotificationProvider.setOptions({
         delay: 5000,
         startTop: 20,
@@ -18,8 +19,8 @@ angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', 'No
         horizontalSpacing: 20,
         positionX: 'left',
         positionY: 'bottom',
-        templateUrl: "partials/notification.jade"
-    })
+        //templateUrl: "partials/notification.jade"
+    });
 }]);
 
 angular.module('HCBPrograms').run(function($rootScope, $timeout, $location) {

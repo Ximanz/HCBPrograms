@@ -31,7 +31,7 @@
                     });
             }
         }
-    };
+    }
 
     function SessionFactory(StorageFactory) {
         return {
@@ -113,12 +113,31 @@
         }
     }
 
+    function TokenInterceptor($q, SessionFactory) {
+        return {
+            request: function(config) {
+                config.headers = config.headers || {};
+                if (SessionFactory.getUser() !== null) {
+                    config.headers['X-Access-Token'] = SessionFactory.getAccessToken();
+                    config.headers['Content-Type'] = "application/json";
+                }
+                return config || $q.when(config);
+            },
+
+            response: function(response) {
+                return response || $q.when(response);
+            }
+        };
+    }
+
     AuthFactory.$inject = ['$location', '$http', 'SessionFactory'];
     SessionFactory.$inject = ['StorageFactory'];
+    TokenInterceptor.$inject = ['$q', 'SessionFactory'];
 
     angular
         .module('HCBPrograms')
         .factory('AuthFactory', AuthFactory)
-        .factory('SessionFactory', SessionFactory);
+        .factory('SessionFactory', SessionFactory)
+        .factory('TokenInterceptor', TokenInterceptor);
 
 })(angular);
