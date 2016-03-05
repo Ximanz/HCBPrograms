@@ -11,10 +11,11 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location,
                 },
                 function(){
                     console.log("Main controller socket failed");
-                    SessionFactory.destroy();
                     Notification.error({message: "There was a problem connecting to the server, please try logging in again."});
                     $location.path("/");
                     $scope.socketConnected = false;
+                    SessionFactory.destroy();
+
                 }
             );
     })

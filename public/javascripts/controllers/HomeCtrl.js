@@ -5,11 +5,11 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location,
             case 'control':
                 $scope.$emit('connection-approved');
                 $location.path("/control");
-                break;
+                return;
             case 'view':
                 $scope.$emit('connection-approved');
                 $location.path("/view");
-                break;
+                return;
         }
     }
 
