@@ -46,10 +46,10 @@
         };
 
         Schedule.prototype.merge = function(source) {
-            _schedule.initialise(source.finishTime, clear);
+            this.initialise(source.finishTime, true);
 
-            _schedule.name = source.name;
-            _schedule.scheduleItems = source.scheduleItems.slice();
+            this.name = source.name;
+            this.scheduleItems = source.scheduleItems.slice();
 
             return this;
         };

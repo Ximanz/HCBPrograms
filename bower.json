@@ -13,6 +13,9 @@
     "angular-resource": "1.4.x",
     "angular-animate": "1.4.x",
     "foundation-sites": "^6.1.2",
-    "angular-ui-notification": "^0.1.0"
+    "angular-ui-notification": "^0.1.0",
+    "jquery-ui": "^1.11.4",
+    "angular-ui-sortable": "^0.13.4",
+    "angularjs-slider": "^2.10.2"
   }
 }

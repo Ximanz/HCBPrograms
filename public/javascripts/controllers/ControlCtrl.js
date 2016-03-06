@@ -1,8 +1,13 @@
 angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, Notification) {
-    $scope.schedule = SessionFactory.getResumeState().schedule || ScheduleFactory.getSchedule(new Date().toDateString());
+    $scope.schedule = LoadScheduleFromResumeState();
     $scope.scheduleList = [];
 
     SaveState();
+
+    $scope.sortableOptions = {
+        handle: '.handle',
+        axis: 'y'
+    };
 
     $scope.loadSchedules = function() {
         ScheduleFactory.getScheduleList(function(response){
@@ -30,5 +35,16 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         resumeState.schedule = $scope.schedule;
 
         SessionFactory.setResumeState(resumeState);
+    }
+
+    function LoadScheduleFromResumeState() {
+        var resumeState = SessionFactory.getResumeState();
+        var schedule = ScheduleFactory.getSchedule(new Date().toDateString());
+
+        if (resumeState != undefined && resumeState.schedule) {
+            schedule.merge(resumeState.schedule)
+        }
+
+        return schedule;
     }
 });

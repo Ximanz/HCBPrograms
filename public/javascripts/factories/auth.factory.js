@@ -48,7 +48,7 @@
 
             setUser: function(user) {
                 this._user = user;
-                StorageFactory.setLocal('session.user', JSON.stringify(user));
+                StorageFactory.setLocal('session.user', angular.toJson(user));
                 return this;
             },
 
@@ -58,7 +58,7 @@
 
             setAccessToken: function(token){
                 this._accessToken = token;
-                StorageFactory.setLocal('session.accessToken', JSON.stringify(token));
+                StorageFactory.setLocal('session.accessToken', angular.toJson(token));
                 return this;
             },
 
@@ -68,7 +68,7 @@
 
             setExpiry: function(expiry){
                 this._expiry = expiry;
-                StorageFactory.setLocal('session.expiry', JSON.stringify(expiry));
+                StorageFactory.setLocal('session.expiry', angular.toJson(expiry));
                 return this;
             },
 
@@ -78,7 +78,7 @@
 
             setResumeState: function(resumeState){
                 this._resumeState = resumeState;
-                StorageFactory.setLocal('session.resumeState', JSON.stringify(resumeState));
+                StorageFactory.setLocal('session.resumeState', angular.toJson(resumeState));
                 return this;
             },
 
@@ -88,7 +88,7 @@
 
             setScreenName: function(screenName){
                 this._screenName = screenName;
-                StorageFactory.setSession('session.screenName', JSON.stringify(screenName));
+                StorageFactory.setSession('session.screenName', angular.toJson(screenName));
                 return this;
             },
 

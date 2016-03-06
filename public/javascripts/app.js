@@ -1,7 +1,7 @@
 $(document).foundation();
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('HCBPrograms', ['ngResource', 'ngRoute', 'ui-notification', 'mm.foundation']);
+var app = angular.module('HCBPrograms', ['ngResource', 'ngRoute', 'ui-notification', 'ui.sortable', 'mm.foundation']);
 
 angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', '$httpProvider', 'NotificationProvider', function($routeProvider, $locationProvider, $httpProvider, NotificationProvider) {
     $locationProvider.html5Mode(true);
