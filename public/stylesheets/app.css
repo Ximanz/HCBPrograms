@@ -19,7 +19,7 @@ a {
 }
 
 .sunken {
-  font-size: 2em;
+  font-size: 1.5em;
   text-shadow: 1px 1px 2px #252525
 }
 
@@ -51,9 +51,14 @@ a {
   width: 150px;
 }
 
+#schedule-menu-dropdown i {
+  float: left;
+}
+
 #schedule-menu-dropdown span {
-  margin-left: 0.3em;
-  font-size: 2em;
+  margin-right: 1.9em;
+  font-size: 1.5em;
+  float: right;
 }
 
 .new-schedule-item-popup .input-group-label {
@@ -61,10 +66,72 @@ a {
   text-align: left;
 }
 
-ul.schedule-item-list {
+.schedule-item-list {
   margin-left: 0;
 }
 
-li.schedule-item {
-  border: 1px solid grey;
+.schedule-item {
+  box-shadow: 1px 1px 3px grey;
+  margin: 4px 0;
 }
+
+  .schedule-item>div{
+    padding: 8px 4px;
+  }
+
+  .schedule-item-header {
+    color: white;
+    background-color: #2199e8;
+    min-height: 36px;
+    position: relative;
+  }
+
+    .schedule-item-header > .handle{
+      float: left;
+      margin: 2px 10px 2px 5px;
+    }
+
+    .schedule-item-header > .schedule-item-name{
+      float: left;
+      margin-top: 2px;
+      font-size: 100%;
+      font-weight: 600;
+    }
+
+    .schedule-item-header > .schedule-item-finish-time{
+      float: right;
+    }
+
+    .schedule-item-header > .insert-schedule-item-btn{
+      position: absolute;
+      border-radius: 1rem;
+      box-shadow: 1px 1px 2px grey;
+      top: -14px;
+      right: -8px;
+    }
+
+  .item-hidden {
+    display: none; !important;
+  }
+
+  .schedule-item-contents{
+
+  }
+
+    .schedule-item-contents .rz-pointer {
+      top: -10px;
+      width: 24px;
+      height: 24px;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      border-radius: 12px;
+    }
+
+    .schedule-item-contents .rz-pointer:after {
+      top: 8px;
+      left: 8px;
+    }
+
+    .schedule-item-contents .rz-bubble {
+      display: none;
+    }

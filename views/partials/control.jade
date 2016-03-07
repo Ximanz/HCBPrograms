@@ -24,25 +24,23 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     input.input-group-field(type='time' ng-model="schedule.finishTime" ng-model-options="{ updateOn: 'blur' }")
         div.row
             div.small-12.columns.schedule-item-list-container
-                ul.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
-                    li.schedule-item(ng-repeat="item in schedule.scheduleItems")
-                        div.schedule-item-header
+                div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
+                    div.schedule-item(ng-repeat="item in schedule.scheduleItems")
+                        div.schedule-item-header(ng-click="toggle('#contents-'+$index)")
                             div.handle
                                 i.fi-braille
                             div.span.schedule-item-name
-                                span.label {{item.name}}
+                                span {{item.name}}
                             div.schedule-item-finish-time
                                 span.label {{item.timeLabel}}
-                            a.button.insert-schedule-item-btn(ng-click="addScheduleItem($index)")
+                            a.button.warning.tiny.insert-schedule-item-btn(ng-click="addScheduleItem($index)")
                                 i.fi-plus
-                        div.schedule-item-contents
-                            input.duration-label(type="number" ng-model="item.duration")
-                            div.slider(data-slider="" data-end="99" data-step="5" )
-                                span.slider-handle(data-slider-handle="" role="slider" tabindex="1")
-                                span.slider-fill(data-slider-fill="")
-                                input(type="hidden" ng-model="item.duration")
+                        div.schedule-item-contents(id="contents-{{$index}}" data-toggler='item-hidden' data-animate="hinge-in-from-top hinge-out-from-top")
+                            input.duration-input(type="number" ng-model="item.duration")
+                            div.slider-container
+                                rzslider(rz-slider-model="item.duration" rz-slider-options="{floor:1,ceil:120,hideLimitLabels:true}")
                             a.button.remove-schedule-item-btn(ng-click="schedule.removeItem($index)")
-                                i.fi-plus
+                                i.fi-x
                 //accordion(close-others=true)
                 //    accordion-group(heading="{{scheduleItem.name}}" ng-repeat="scheduleItem in schedule.scheduleItems")
                 //        div.schedule-item-finish-time
