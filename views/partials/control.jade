@@ -26,7 +26,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
             div.small-12.columns.schedule-item-list-container
                 div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
                     div.schedule-item(ng-repeat="item in schedule.scheduleItems")
-                        div.schedule-item-header(ng-click="toggle('#contents-'+$index)")
+                        div.schedule-item-header(ng-click="isExpanded = !isExpanded")
                             div.handle
                                 i.fi-braille
                             div.span.schedule-item-name
@@ -35,22 +35,13 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 span.label {{item.timeLabel}}
                             a.button.warning.tiny.insert-schedule-item-btn(ng-click="addScheduleItem($index)")
                                 i.fi-plus
-                        div.schedule-item-contents(id="contents-{{$index}}" data-toggler='item-hidden' data-animate="hinge-in-from-top hinge-out-from-top")
+                        div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
                             input.duration-input(type="number" ng-model="item.duration")
                             div.slider-container
                                 rzslider(rz-slider-model="item.duration" rz-slider-options="{floor:1,ceil:120,hideLimitLabels:true}")
                             a.button.remove-schedule-item-btn(ng-click="schedule.removeItem($index)")
                                 i.fi-x
-                //accordion(close-others=true)
-                //    accordion-group(heading="{{scheduleItem.name}}" ng-repeat="scheduleItem in schedule.scheduleItems")
-                //        div.schedule-item-finish-time
-                //            span.label {{scheduleItem.timeLabel}}
-                //        a.button.insert-schedule-item-btn(data-schedule-index="{{$index}}")
-                //            i.fi-add
-                //            | Insert new item
-                //        h2 {{scheduleItem.duration}}
-        div.row
-            div.small-12.columns.add-new-schedule-item
+        div.row.column.add-new-schedule-item
                 button.button(type="button" ng-click="addScheduleItem(schedule.scheduleItems.length)") Add Item
     div.off-canvas.position-right.reveal-for-large(id="offCanvasRight" data-off-canvas='' data-position="right")
         div.row
@@ -61,15 +52,3 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
             div.title-bar-right
                 button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
-div.full.reveal(id="schedule-list-popup" data-reveal='' data-animation-in="slide-in" data-animation-out="slide-out")
-    h3 Stored Schedules
-    div.row.small-up-1.medium-up-3.large-up-5.schedule-list-grid
-        div.column.schedule-list-item(ng-repeat="schedule in scheduleList")
-            h5 {{schedule.name}}
-            span.label {{schedule.scheduleItems.length}} Items
-            button.success(type="button" data-schedule-name="{{schedule.name}}") Open
-            button.close-button.alert(type="button" data-schedule-name="{{schedule.name}}")
-                i.fi-x
-    h1.subheader(ng-hide="scheduleList.length > 0") Couldn't find any saved schedules
-    button.close-button(data-close='' type="button")
-        span(aria-hidden=false) &times;

@@ -135,3 +135,22 @@ a {
     .schedule-item-contents .rz-bubble {
       display: none;
     }
+
+.add-new-schedule-item {
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  margin-top: 15px;
+}
+
+  .add-new-schedule-item button {
+    box-shadow: 1px 1px 2px grey;
+    /*margin: 10px 0;*/
+  }
+
+.schedule-list-grid {
+
+}
+
+  .schedule-list-item {
+    position: relative;
+  }

@@ -19,8 +19,8 @@ router.get('/partials/:name', function(req, res) {
 router.post('/connect', auth.connect);
 
 router.get('/api/schedule', scheduleAPI.readAll);
-router.get('/api/schedule/:id', scheduleAPI.readOne);
+router.get('/api/schedule/:name', scheduleAPI.readOne);
 router.post('/api/schedule', scheduleAPI.createOne);
-router.delete('/api/schedule/:id', scheduleAPI.deleteOne);
+router.delete('/api/schedule/:name', scheduleAPI.deleteOne);
 
 module.exports = router;

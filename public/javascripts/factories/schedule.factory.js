@@ -1,5 +1,5 @@
 (function (angular) {
-    function ScheduleFactory($http, Notification) {
+    function ScheduleFactory($http, NotificationFactory) {
         // Schedule
         function Schedule(name, finishTime) {
             this.name = name;
@@ -66,10 +66,10 @@
                 $http.get('/api/schedule/' + name)
                     .then(
                         function(response){
-                            _schedule.merge(response);
+                            _schedule.merge(response.data);
                         },
                         function(response){
-                            Notification.error({title: "Unable to load schedule", message: response})
+                            NotificationFactory.displayAll(response.data.messages);
                         }
                     );
             },
@@ -80,7 +80,7 @@
                             successCallback(response);
                         },
                         function(response){
-                            Notification.error({title: "Unable to load schedule list", message: response})
+                            NotificationFactory.displayAll(response.data.messages);
                         }
                     );
             },
@@ -91,25 +91,25 @@
                             successCallback(response);
                         },
                         function(response){
-                            Notification.error({title: "Unable to save schedule", message: response})
+                            NotificationFactory.displayAll(response.data.messages);
                         }
                     );
             },
             deleteSchedule: function(name, successCallback) {
-                $http.get('/api/schedule/' + templateId)
+                $http.delete('/api/schedule/' + name)
                     .then(
                         function(response) {
                             successCallback(response);
                         },
                         function(response){
-                            Notification.error({title: "Unable to save schedule", message: response})
+                            NotificationFactory.displayAll(response.data.messages);
                         }
                     );
             }
         }
     }
 
-    ScheduleFactory.$inject = ['$http', "Notification"];
+    ScheduleFactory.$inject = ['$http', "NotificationFactory"];
 
     angular
         .module('HCBPrograms')

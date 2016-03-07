@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, Notification) {
+angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, NotificationFactory) {
     $scope.schedule = LoadScheduleFromResumeState();
     $scope.scheduleList = [];
 
@@ -9,13 +9,30 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         axis: 'y'
     };
 
-    $scope.toggle = function(selector) {
-        $(selector).foundation('toggle');
+    $scope.loadSchedules = function() {
+        ScheduleFactory.getScheduleList(
+            function(response){
+                $scope.scheduleList = angular.copy(response.data);
+                var modalInstance = $modal.open({
+                    templateUrl: '/partials/scheduleList.jade',
+                    controller: 'ScheduleListPopupCtrl',
+                    windowClass: 'large',
+                    resolve: {
+                        scheduleList: function() { return $scope.scheduleList; }
+                    }
+                });
+
+                modalInstance.result.then(function(schedule) {
+                    ScheduleFactory.loadSchedule(schedule.name);
+                })
+            }, function(error){
+
+            });
     };
 
-    $scope.loadSchedules = function() {
-        ScheduleFactory.getScheduleList(function(response){
-            $scope.scheduleList = angular.copy(response.data);
+    $scope.saveSchedule = function() {
+        ScheduleFactory.saveSchedule(function(response){
+            NotificationFactory.displayAll(response.data.messages);
         })
     };
 

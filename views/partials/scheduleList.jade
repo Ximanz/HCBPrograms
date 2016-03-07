@@ -1,0 +1,12 @@
+div
+h3 Stored Schedules
+div.row.small-up-1.medium-up-3.large-up-5.schedule-list-grid
+    div.column.schedule-list-item(ng-repeat="schedule in scheduleList")
+        h5 {{schedule.name}}
+        span.label {{schedule.scheduleItems.length}} Items
+        button.success(type="button" ng-click="open(schedule)") Open
+        button.close-button.alert(type="button" ng-click="delete(schedule, $index)")
+            i.fi-x
+h1.subheader(ng-hide="scheduleList.length > 0") Couldn't find any saved schedules
+button.close-button(type="button" ng-click="cancel()")
+    span &times;
