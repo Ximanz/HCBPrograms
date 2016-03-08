@@ -4,6 +4,7 @@ var config = require('../config').init();
 module.exports = function (io) {
     var _schedule = "";
     var _timerSettings = "";
+    var _chatLog = [];
 
     io.on('connection', function(socket){
         //temp delete socket from namespace connected map
@@ -53,7 +54,12 @@ module.exports = function (io) {
         socket.on('authenticate', authenticate );
 
         socket.on('chat message', function(chatMessage) {
+            _chatLog.push(chatMessage);
             io.emit('chat message', chatMessage);
+        });
+
+        socket.on('get chat log', function() {
+            io.to(socket.id).emit('update chat log', _chatLog);
         });
 
         socket.on('update schedule', function(schedule) {
@@ -70,7 +76,7 @@ module.exports = function (io) {
             socket.broadcast.emit('update timer', _timerSettings)
         });
 
-        socket.one('get timer', function() {
+        socket.on('get timer', function() {
             io.to(socket.id).emit('update timer', _timerSettings)
         });
     });

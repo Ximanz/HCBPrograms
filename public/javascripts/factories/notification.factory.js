@@ -1,19 +1,23 @@
 (function (angular) {
     function NotificationFactory(Notification) {
+        var displayMessage = function(type, content) {
+            if (type == 'error') {
+                Notification.error({title: 'Error', message: content});
+            } else if (type == 'success') {
+                Notification.success({title: 'Success', message: content});
+            } else {
+                Notification({message: content});
+            }
+        };
+
         return {
             displayAll: function(messages) {
-                messages.forEach(function (message) {
-                    if (message.type == 'error') {
-                        Notification.error({title: 'Error', message: message.content});
-                    } else if (message.type == 'success') {
-                        Notification.success({title: 'Success', message: message.content});
-                    } else {
-                        Notification.info({title: 'Info', message: message.content});
-                    }
-                })
+                messages.forEach(function(message) {
+                    displayMessage(message.type, message.content)
+                });
             },
             displayOne: function(message) {
-                displayAll([message]);
+                displayMessage(message.type, message.content);
             }
         }
     }

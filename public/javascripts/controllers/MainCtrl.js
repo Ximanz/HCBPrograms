@@ -8,6 +8,10 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location,
                 function() {
                     console.log("Main controller socket connected");
                     $scope.socketConnected = true;
+                    SocketFactory.configure();
+                    SocketFactory.getSchedule();
+                    SocketFactory.getTimer();
+                    SocketFactory.getChatLog();
                 },
                 function(){
                     console.log("Main controller socket failed");

@@ -1,5 +1,7 @@
-angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, NotificationFactory) {
-    $scope.schedule = LoadScheduleFromResumeState();
+angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
+    $scope.schedule = ScheduleFactory.getSchedule();
+    $scope.mainTimer = TimerFactory.getTimer('main-timer');
+    $scope.chatLog = ChatFactory.getChatLog();
     $scope.scheduleList = [];
 
     SaveState();
@@ -16,7 +18,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
                 var modalInstance = $modal.open({
                     templateUrl: '/partials/scheduleList.jade',
                     controller: 'ScheduleListPopupCtrl',
-                    windowClass: 'large',
+                    windowClass: 'full',
                     resolve: {
                         scheduleList: function() { return $scope.scheduleList; }
                     }
@@ -49,6 +51,11 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         })
     };
 
+    $scope.sendChatMessage = function() {
+        SocketFactory.sendChatMessage($scope.chatLine);
+        $scope.chatLine = "";
+    };
+
     function SaveState() {
         var resumeState = SessionFactory.getResumeState() || {};
 
@@ -56,16 +63,5 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         resumeState.schedule = $scope.schedule;
 
         SessionFactory.setResumeState(resumeState);
-    }
-
-    function LoadScheduleFromResumeState() {
-        var resumeState = SessionFactory.getResumeState();
-        var schedule = ScheduleFactory.getSchedule(new Date().toDateString());
-
-        if (resumeState != undefined && resumeState.schedule) {
-            schedule.merge(resumeState.schedule)
-        }
-
-        return schedule;
     }
 });

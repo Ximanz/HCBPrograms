@@ -39,27 +39,41 @@ a {
   background-color: transparent;
 }
 
-#schedule-menu-dropdown {
-  padding: 0;
-  width: 150px;
-  background-color: white;
+.reveal-overlay {
+  overflow-y: auto;
+}
+
+.reveal.full {
+  margin-top: 0;
+}
+
+.schedule-panel-menu-bar {
+  background-color: #2199e8;
+}
+
+.schedule-menu .menu {
   border: none;
+  min-width: 100px;
 }
 
-#schedule-menu-dropdown .button {
-  margin-bottom: 2px;
-  width: 150px;
-}
+  .schedule-menu-dropdown li {
+    margin-top: 1px;
+  }
 
-#schedule-menu-dropdown i {
-  float: left;
-}
+    .schedule-menu-dropdown li button {
+      width: 100%;
+    }
 
-#schedule-menu-dropdown span {
-  margin-right: 1.9em;
-  font-size: 1.5em;
-  float: right;
-}
+    .schedule-menu-dropdown li i{
+      float: left;
+    }
+
+    .schedule-menu-dropdown li span{
+      float: left;
+      font-size: 1.25em;
+      line-height: 1.33em;
+      margin-left: 0.7em;
+    }
 
 .new-schedule-item-popup .input-group-label {
   min-width: 90px;

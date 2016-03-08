@@ -43,13 +43,23 @@
                     ChatFactory.newChatMessage(JSON.parse(chatMessage));
                 });
 
-                _scoket.on('update schedule', function(data) {
+                _socket.on('update chat log', function(chatLog) {
+                    if (!chatLog || chatLog.length == 0) return;
+
+                    chatLog.forEach(function(chatMessage) {
+                        ChatFactory.newChatMessage(JSON.parse(chatMessage));
+                    });
+                });
+
+                _socket.on('update schedule', function(data) {
+                    if (!data || data.length == 0) return;
+
                     var schedule = JSON.parse(data);
 
                     ScheduleFactory.getSchedule().merge(schedule);
                 });
 
-                _scoket.on('update timer', function(data) {
+                _socket.on('update timer', function(data) {
                     if (!data || data.length == 0) return;
 
                     var timerSettings = JSON.parse(data);
@@ -63,10 +73,14 @@
 
                 var chatMessage = {
                     sender: SessionFactory.getUser().screenName,
-                    message: message
+                    message: message,
+                    timestamp: new Date().toString("dddd, MMM Do, h:mm:ss a")
                 };
 
                 _socket.emit('chat message', angular.toJson(chatMessage));
+            },
+            getChatLog: function() {
+                _socket.emit('get chat log');
             },
             getSchedule: function() {
                 _socket.emit('get schedule');

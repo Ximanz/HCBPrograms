@@ -1,19 +1,20 @@
 div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
     div.off-canvas.position-left.reveal-for-medium(id="offCanvasLeft" data-off-canvas='')
-        div.row
+        div.row.schedule-panel-menu-bar
             div.small-12.columns.schedule-menu
-                button.button(type="button" data-toggle="schedule-menu-dropdown")
-                    i.fi-widget.sunken
-                div.dropdown-pane(id="schedule-menu-dropdown" data-dropdown='')
-                    div.row
-                        div.small-12.columns
-                            button.button.text-left(type="button" ng-click="loadSchedules()" data-open="schedule-list-popup")
-                                i.fi-thumbnails.sunken
-                                span Load
-                        div.small-12.columns
-                            button.button.text-left(type="button" ng-click="saveSchedule()")
-                                i.fi-save.sunken
-                                span Save
+                ul.dropdown.menu(data-dropdown-menu='')
+                    li
+                        button.button(type="button")
+                            i.fi-widget.sunken
+                        ul.menu.schedule-menu-dropdown
+                            li
+                                button.button.text-left(type="button" ng-click="loadSchedules()")
+                                    i.fi-thumbnails.sunken
+                                    span Load
+                            li
+                                button.button.text-left(type="button" ng-click="saveSchedule()")
+                                    i.fi-save.sunken
+                                    span Save
         div.row
             div.small-12.columns.schedule-name
                 label schedule name
@@ -23,7 +24,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     span.input-group-label finish time
                     input.input-group-field(type='time' ng-model="schedule.finishTime" ng-model-options="{ updateOn: 'blur' }")
         div.row
-            div.small-12.columns.schedule-item-list-container
+            div.small-11.columns.schedule-item-list-container
                 div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
                     div.schedule-item(ng-repeat="item in schedule.scheduleItems")
                         div.schedule-item-header(ng-click="isExpanded = !isExpanded")
@@ -54,13 +55,26 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
         div.row.column.control-status-bar
         div.row.time-display-container
-            div.small-12.medium-6.current-time-container
+            div.small-12.medium-6.columns.current-time-container
                 span
-            div.small-12.medium-6.finish-time-container
+            div.small-12.medium-6.columns.finish-time-container
                 span
-            div.small-12.countdown-container
+            div.small-12.columns.countdown-container
                 span
         div.row.countdown-control-container
         div.row.messages-control-container
         div.row.chat-container
-            div.small-12
+            div.small-12.columns.chat-window
+                div.row.column.chat-message(ng-repeat="chatMessage in chatLog" ng-class="chatMessage.class")
+                    div.message-card
+                        div.sender-details
+                            span.sender-name {{chatMessage.sender}}
+                            span.timestamp {{chatMessage.timestamp}}
+                        div.message-content
+                            span.message-content {{chatMessage.message}}
+            div.small-12.columns.chat-input
+                div.input-group
+                    input.input-group-field(type="text" ng-model="chatLine")
+                    div.input-group-button
+                        button.button(type="button" ng-click="sendChatMessage()")
+                            span Send
