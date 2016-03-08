@@ -36,7 +36,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                             a.button.warning.tiny.insert-schedule-item-btn(ng-click="addScheduleItem($index)")
                                 i.fi-plus
                         div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
-                            input.duration-input(type="number" ng-model="item.duration")
+                            input.duration-input(type="number" ng-model="item.duration" ng-model-options="{ updateOn: 'blur' }")
                             div.slider-container
                                 rzslider(rz-slider-model="item.duration" rz-slider-options="{floor:1,ceil:120,hideLimitLabels:true}")
                             a.button.remove-schedule-item-btn(ng-click="schedule.removeItem($index)")
@@ -52,3 +52,6 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
             div.title-bar-right
                 button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
+        div.row
+            div.small-12.medium-6.medium-centered.current-time-container
+                span

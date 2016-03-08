@@ -5,6 +5,7 @@
             this.duration = duration;
             this.granularity = granularity || 1000;
             this.tickFtns = [];
+            this.overCount = false;
             this.running = false;
         }
 
@@ -13,23 +14,24 @@
                 return;
             }
             this.running = true;
-            var start = Date.now(),
+            var finish = Date.now() + this.duration * 1000,
                 self = this,
                 diff, obj;
 
             (function timer() {
-                diff = self.duration - Math.floor((Date.now() - start) / 1000);
+                diff = Math.floor((finish - Date.now()) / 1000);
 
-                if (diff > 0) {
+                if (diff > 0 || self.overCount) {
                     self.timeout = setTimeout(timer, self.granularity);
                 } else {
                     diff = 0;
+                    delete finish;
                     self.running = false;
                 }
 
                 obj = CountDownTimer.parse(diff);
                 self.tickFtns.forEach(function(ftn) {
-                    ftn.call(this, obj.hours, obj.minutes, obj.seconds);
+                    ftn.call(this, obj.hours, obj.minutes, obj.seconds, obj.negative);
                 }, that);
             }());
         };
@@ -47,14 +49,7 @@
 
         CountDownTimer.prototype.setDuration = function(newDuration) {
             this.duration = newDuration;
-        };
-
-        CountDownTimer.prototype.modifyDuration = function(change) {
-            this.duration += change;
-
-            if (!this.running && duration > 0) {
-                this.start();
-            }
+            return this;
         };
 
         CountDownTimer.prototype.stop = function() {
@@ -69,9 +64,10 @@
 
         CountDownTimer.parse = function(seconds) {
             return {
-                'hours'     : Math.floor(seconds / 3600),
-                'minutes'   : Math.floor(seconds / 60),
-                'seconds'   : Math.floor(seconds % 60)
+                'negative'  : seconds < 0,
+                'hours'     : Math.floor(Math.abs(seconds) / 3600),
+                'minutes'   : Math.floor(Math.abs(seconds) / 60),
+                'seconds'   : Math.floor(Math.abs(seconds) % 60)
             };
         };
 
@@ -85,12 +81,25 @@
 
                 return countdownTimers[timerKey];
             },
+            removeTimer: function(timerKey) {
+                if (!countdownTimers.hasOwnProperty(timerKey)){
+                    countdownTimers[timerKey].stop();
+                    delete countdownTimers[timerKey];
+                }
+            },
             stopAll: function() {
                 for (var timer in countdownTimers) {
                     if (countdownTimers.hasOwnProperty(timer)) {
                         countdowntTimers[timer].stop();
                     }
                 }
+            },
+            countDownTo: function(timerKey, endTime) {
+                if (endTime.prototype.toString.call(date) !== '[object Date]') return;
+
+                var duration = (endTime.getTime() - Date.now()) / 1000;
+                var timer = getTimer[timerKey];
+                timer.setDuration(duration).start();
             }
         }
     }

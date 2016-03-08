@@ -1,5 +1,5 @@
 (function (angular) {
-    function SocketFactory(SessionFactory, TimerFactory, ScheduleFactory, $q) {
+    function SocketFactory(SessionFactory, TimerFactory, ScheduleFactory, ChatFactory, $q) {
         var _socket, _isAuthenticated;
 
         return {
@@ -36,16 +36,45 @@
 
                 return socketDeferred.promise;
             },
-
             configure: function() {
                 if (!_isAuthenticated) return false;
 
-                _socket.on('')
+                _socket.on('chat message', function(chatMessage) {
+                    ChatFactory.newChatMessage(JSON.parse(chatMessage));
+                });
+
+                _scoket.on('update schedule', function(data) {
+                    var schedule = JSON.parse(data);
+
+                    ScheduleFactory.getSchedule().merge(schedule);
+                });
+            },
+            sendChatMessage: function(message) {
+                if (!message || message.length == 0) return;
+
+                var chatMessage = {
+                    sender: SessionFactory.getUser().screenName,
+                    message: message
+                };
+
+                _socket.emit('chat message', angular.toJson(chatMessage));
+            },
+            getSchedule: function() {
+                _socket.emit('get schedule');
+            },
+            updateSchedule: function() {
+                _socket.emit('update schedule', angular.toJson(ScheduleFactory.getSchedule()));
+            },
+            getTimer: function() {
+                _socket.emit('get timer');
+            },
+            updateTimer: function() {
+                _socket.emit('update timer', angular.toJson(TimerFactory.getTimer('main-timer')));
             }
         }
     }
 
-    SocketFactory.$inject = ['SessionFactory', 'TimerFactory', 'ScheduleFactory', '$q'];
+    SocketFactory.$inject = ['SessionFactory', 'TimerFactory', 'ScheduleFactory', 'ChatFactory', '$q'];
 
     angular
         .module('HCBPrograms')

@@ -2,6 +2,9 @@ var jwt = require('jwt-simple');
 var config = require('../config').init();
 
 module.exports = function (io) {
+    var _schedule = "";
+    var _timerSettings = "";
+
     io.on('connection', function(socket){
         //temp delete socket from namespace connected map
         delete io.sockets.connected[socket.id];
@@ -14,6 +17,7 @@ module.exports = function (io) {
         var auth_timeout = setTimeout(function () {
             socket.disconnect('unauthorized');
         }, options.timeout || 5000);
+
 
         var authenticate = function (data) {
             clearTimeout(auth_timeout);
@@ -47,5 +51,27 @@ module.exports = function (io) {
         };
 
         socket.on('authenticate', authenticate );
+
+        socket.on('chat message', function(chatMessage) {
+            io.emit('chat message', chatMessage);
+        });
+
+        socket.on('update schedule', function(schedule) {
+            _schedule = schedule;
+            socket.broadcast.emit('update schedule', _schedule);
+        });
+
+        socket.on('get schedule', function() {
+            io.to(socket.id).emit('update schedule', _schedule);
+        });
+
+        socket.on('update timer', function(timerSettings) {
+            _timerSettings = timerSettings;
+            socket.broadcast.emit('update timer', _timerSettings)
+        });
+
+        socket.one('get timer', function() {
+            io.to(socket.id).emit('update timer', _timerSettings)
+        });
     });
 };
