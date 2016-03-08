@@ -48,6 +48,15 @@
 
                     ScheduleFactory.getSchedule().merge(schedule);
                 });
+
+                _scoket.on('update timer', function(data) {
+                    if (!data || data.length == 0) return;
+
+                    var timerSettings = JSON.parse(data);
+                    if (!timerSettings.running) return;
+
+                    TimerFactory.countDownTo('main-timer', new Date(timerSettings.finish), timerSettings.granularity, timerSettings.overCount);
+                });
             },
             sendChatMessage: function(message) {
                 if (!message || message.length == 0) return;
@@ -69,7 +78,15 @@
                 _socket.emit('get timer');
             },
             updateTimer: function() {
-                _socket.emit('update timer', angular.toJson(TimerFactory.getTimer('main-timer')));
+                var timer = TimerFactory.getTimer('main-timer');
+                var data = {
+                    finish: timer.finish,
+                    duration: timer.duration,
+                    running: timer.running,
+                    overCount: timer.overCount,
+                    granularity: timer.granularity
+                };
+                _socket.emit('update timer', angular.toJson(data));
             }
         }
     }

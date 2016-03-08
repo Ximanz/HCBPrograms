@@ -25,7 +25,6 @@
                     self.timeout = setTimeout(timer, self.granularity);
                 } else {
                     diff = 0;
-                    delete finish;
                     self.running = false;
                 }
 
@@ -53,6 +52,8 @@
         };
 
         CountDownTimer.prototype.stop = function() {
+            if (!this.running) return;
+
             this.duration = 0;
             this.running = false;
             clearTimeout(this.timeout);
@@ -90,15 +91,29 @@
             stopAll: function() {
                 for (var timer in countdownTimers) {
                     if (countdownTimers.hasOwnProperty(timer)) {
-                        countdowntTimers[timer].stop();
+                        countdownTimers[timer].stop();
                     }
                 }
             },
-            countDownTo: function(timerKey, endTime) {
+            countDownTo: function(timerKey, endTime, granularity, overCount) {
                 if (endTime.prototype.toString.call(date) !== '[object Date]') return;
 
                 var duration = (endTime.getTime() - Date.now()) / 1000;
-                var timer = getTimer[timerKey];
+                var timer = countdownTimers[timerKey];
+                timer.stop();
+
+                if (granularity) timer.granularity = granularity;
+                if (overCount) timer.overCount = overCount;
+                timer.setDuration(duration).start();
+            },
+            countDownFor: function(timerKey, duration, granularity, overCount) {
+                if (!duration || duration <= 0) return;
+
+                var timer = countdownTimers[timerKey];
+                timer.stop();
+
+                if (granularity) timer.granularity = granularity;
+                if (overCount) timer.overCount = overCount;
                 timer.setDuration(duration).start();
             }
         }
