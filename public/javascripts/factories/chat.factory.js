@@ -1,5 +1,5 @@
 (function (angular) {
-    function ChatFactory(NotificationFactory, SessionFactory) {
+    function ChatFactory($rootScope, NotificationFactory, SessionFactory) {
         var _chatLog = [];
 
         return {
@@ -23,12 +23,19 @@
                     chatMessage.class = 'receiver';
                 }
 
-                _chatLog.push(chatMessage);
+                _chatLog.push({
+                    sender: chatMessage.sender,
+                    message: chatMessage.message,
+                    class: chatMessage.class,
+                    timestamp: moment(chatMessage.timestamp)
+                });
+
+                $rootScope.$apply();
             }
         }
     }
 
-    ChatFactory.$inject = ['NotificationFactory', 'SessionFactory'];
+    ChatFactory.$inject = ['$rootScope', 'NotificationFactory', 'SessionFactory'];
 
     angular
         .module('HCBPrograms')

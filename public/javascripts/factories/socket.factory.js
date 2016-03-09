@@ -74,7 +74,7 @@
                 var chatMessage = {
                     sender: SessionFactory.getUser().screenName,
                     message: message,
-                    timestamp: new Date().toString("dddd, MMM Do, h:mm:ss a")
+                    timestamp: new Date().toISOString()
                 };
 
                 _socket.emit('chat message', angular.toJson(chatMessage));

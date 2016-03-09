@@ -99,7 +99,7 @@
                 if (endTime.prototype.toString.call(date) !== '[object Date]') return;
 
                 var duration = (endTime.getTime() - Date.now()) / 1000;
-                var timer = countdownTimers[timerKey];
+                var timer = countdownTimers[timerKey] || (countdownTimers[timerKey] = new CountDownTimer(duration));
                 timer.stop();
 
                 if (granularity) timer.granularity = granularity;
@@ -109,7 +109,7 @@
             countDownFor: function(timerKey, duration, granularity, overCount) {
                 if (!duration || duration <= 0) return;
 
-                var timer = countdownTimers[timerKey];
+                var timer = countdownTimers[timerKey] || (countdownTimers[timerKey] = new CountDownTimer(duration));
                 timer.stop();
 
                 if (granularity) timer.granularity = granularity;

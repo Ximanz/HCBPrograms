@@ -17,6 +17,7 @@
     "jquery-ui": "^1.11.4",
     "angular-ui-sortable": "^0.13.4",
     "angularjs-slider": "^2.10.2",
-    "jquery-ui-touch-punch": "*"
+    "jquery-ui-touch-punch": "*",
+    "moment": "^2.12.0"
   }
 }

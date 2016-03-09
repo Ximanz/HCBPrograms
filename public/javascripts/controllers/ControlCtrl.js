@@ -4,6 +4,9 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     $scope.chatLog = ChatFactory.getChatLog();
     $scope.scheduleList = [];
 
+    $scope.mainTimer.onTick(function(hour, min, sec, negative) {
+    });
+
     SaveState();
 
     $scope.sortableOptions = {
@@ -42,7 +45,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         var modalInstance = $modal.open({
             templateUrl: '/partials/addScheduleItem.jade',
             controller: 'AddScheduleItemPopupCtrl',
-            windowClass: 'tiny'
+            windowClass: 'medium'
         });
 
         modalInstance.result.then(function(scheduleItem) {
@@ -54,6 +57,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     $scope.sendChatMessage = function() {
         SocketFactory.sendChatMessage($scope.chatLine);
         $scope.chatLine = "";
+        $scope.chatFocus = true;
     };
 
     function SaveState() {
