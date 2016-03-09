@@ -17,8 +17,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                     span Save
         div.row
             div.small-12.columns.schedule-name
-                label schedule name
-                    input(type='text' ng-model="schedule.name")
+                input(type='text' ng-model="schedule.name" placeholder="Schedule Name")
             div.small-12.columns.schedule-finish-time
                 div.input-group
                     span.input-group-label finish time
@@ -26,7 +25,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
         div.row
             div.small-11.columns.schedule-item-list-container
                 div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
-                    div.schedule-item(ng-repeat="item in schedule.scheduleItems")
+                    div.schedule-item.card(ng-repeat="item in schedule.scheduleItems")
                         div.schedule-item-header(ng-click="isExpanded = !isExpanded")
                             div.handle
                                 i.fi-braille
@@ -34,7 +33,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 span {{item.name}}
                             div.schedule-item-finish-time
                                 span.label {{item.timeLabel}}
-                            a.button.warning.tiny.insert-schedule-item-btn(ng-click="addScheduleItem($index)")
+                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index)")
                                 i.fi-plus
                         div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
                             input.duration-input(type="number" ng-model="item.duration" ng-model-options="{ updateOn: 'blur' }")
@@ -54,13 +53,20 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
             div.title-bar-right
                 button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
         div.row.column.control-status-bar
-        div.row.time-display-container
-            div.small-12.medium-6.columns.current-time-container
-                span(ng-model="moment().format('h.mm:ss a')")
-            div.small-12.medium-6.columns.finish-time-container
-                span(ng-model="moment(schedule.finishTime).fromNow()")
-            div.small-12.columns.countdown-container
-                span(ng-model="mainTimerDisplay")
+        div.row.collapse.time-display-container
+            div.small-6.columns
+                div.current-time-container.card.text-center
+                    label It's now
+                    span {{currentTime}}
+            div.small-6.columns
+                div.finish-time-container.card.text-center
+                    label Serving will end in
+                    span {{serviceEndTime}}
+            div.small-12.columns
+                div.countdown-container.card.text-center
+                    label {{currentScheduleItem}}
+                    span(ng-class="{'over-time': overtime}") {{mainTimerOutput}}
+                    label until {{nextScheduleItem}}
         div.row.countdown-control-container
             div.small-12.columns.section-header(ng-click="showCountdownControl = !showCountdownControl")
                 span Control
@@ -73,12 +79,12 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
             div.small-12.columns.section-header(ng-click="showChat = !showChat")
                 span Chat
             div.small-12.columns.section-contents(ng-show="showChat")
-                div.small-12.columns.chat-window(id="chat-window")
+                div.small-12.columns.chat-window.inset(id="chat-window")
                     div.row.column.chat-message(ng-repeat="chatMessage in chatLog" scroll='')
                         div.sender-details(ng-class="chatMessage.class")
                             span.sender-name {{chatMessage.sender}}
                             span.timestamp {{chatMessage.timestamp.fromNow()}}
-                        div.message-card(ng-class="chatMessage.class")
+                        div.message-card.card(ng-class="chatMessage.class")
                             span.message-content {{chatMessage.message}}
                 div.small-12.columns.chat-input
                     div.input-group

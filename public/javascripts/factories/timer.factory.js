@@ -1,5 +1,5 @@
 (function (angular) {
-    function TimerFactory($http) {
+    function TimerFactory($timeout) {
         // CountDownTimer
         function CountDownTimer(duration, granularity) {
             this.duration = duration;
@@ -22,7 +22,7 @@
                 diff = Math.floor((finish - Date.now()) / 1000);
 
                 if (diff > 0 || self.overCount) {
-                    self.timeout = setTimeout(timer, self.granularity);
+                    self.timeout = $timeout(timer, self.granularity, true);
                 } else {
                     diff = 0;
                     self.running = false;
@@ -31,7 +31,7 @@
                 obj = CountDownTimer.parse(diff);
                 self.tickFtns.forEach(function(ftn) {
                     ftn.call(this, obj.hours, obj.minutes, obj.seconds, obj.negative);
-                }, that);
+                }, self);
             }());
         };
 
@@ -51,12 +51,17 @@
             return this;
         };
 
+        CountDownTimer.prototype.setOverCount = function(overCount) {
+            this.overCount = overCount;
+            return this;
+        };
+
         CountDownTimer.prototype.stop = function() {
             if (!this.running) return;
 
             this.duration = 0;
             this.running = false;
-            clearTimeout(this.timeout);
+            $timeout.cancel(this.timeout);
 
             this.tickFtns.forEach(function(ftn) {
                 ftn.call(this, obj.hours, obj.minutes, obj.seconds);
@@ -119,7 +124,7 @@
         }
     }
 
-    TimerFactory.$inject = ['$http'];
+    TimerFactory.$inject = ['$timeout'];
 
     angular
         .module('HCBPrograms')

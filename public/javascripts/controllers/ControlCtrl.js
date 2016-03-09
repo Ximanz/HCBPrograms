@@ -1,11 +1,28 @@
 angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
     $scope.schedule = ScheduleFactory.getSchedule();
+
     $scope.mainTimer = TimerFactory.getTimer('main-timer');
+    $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
+
     $scope.chatLog = ChatFactory.getChatLog();
     $scope.scheduleList = [];
+    $scope.currentTime = "";
+    $scope.serviceEndTime = "";
+    $scope.mainTimerOutput = "00:00";
 
     $scope.mainTimer.onTick(function(hour, min, sec, negative) {
+        $scope.mainTimerOutput = (negative ? "-" : "")
+                                 + (hour > 0 ? String("00" + hour + ":").slice(-3) : "")
+                                 + String("00" + min + ":").slice(-3)
+                                 + String("00" + sec + ":").slice(-3);
+
+        $scope.overTime = negative;
     });
+
+    $scope.systemTimer.setOverCount(true).onTick(function() {
+        $scope.currentTime = moment().format('h.mm:ss a');
+        $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
+    }).start();
 
     SaveState();
 
