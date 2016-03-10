@@ -5,6 +5,7 @@
             this.name = name;
             this.finishTime = finishTime || new Date(new Date().setHours(18,0,0,0));
             this.scheduleItems = [];
+            this.live = false;
         }
 
         Schedule.prototype.currentItem = function() {
@@ -46,12 +47,27 @@
         };
 
         Schedule.prototype.merge = function(source) {
-            this.initialise(source.finishTime, true);
+            var finishTime = new Date();
+            var sourceTime = new Date(source.finishTime);
+            finishTime.setHours(sourceTime.getHours(), sourceTime.getMinutes(), 0, 0);
+
+            this.initialise(finishTime, true);
 
             this.name = source.name;
             this.scheduleItems = source.scheduleItems.slice();
 
             return this;
+        };
+
+        Schedule.prototype.getScheduledStartFromFinish = function(index) {
+            if (index >= this.scheduleItems.length) return 0;
+
+            var scheduleItemStartTime = this.scheduleItems.reduce(function(startTime, scheduleItem, idx){
+                if (idx >= index) startTime.setMinutes(startTime.getMinutes()-scheduleItem.duration);
+                return startTime;
+            }, new Date(this.finishTime));
+
+            return moment(scheduleItemStartTime);
         };
 
         var _schedule;

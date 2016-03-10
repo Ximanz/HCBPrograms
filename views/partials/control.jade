@@ -23,7 +23,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     span.input-group-label finish time
                     input.input-group-field(type='time' ng-model="schedule.finishTime" ng-model-options="{ updateOn: 'blur' }")
         div.row
-            div.small-11.columns.schedule-item-list-container
+            div.small-12.columns.schedule-item-list-container
                 div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
                     div.schedule-item.card(ng-repeat="item in schedule.scheduleItems")
                         div.schedule-item-header(ng-click="isExpanded = !isExpanded")
@@ -32,7 +32,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                             div.span.schedule-item-name
                                 span {{item.name}}
                             div.schedule-item-finish-time
-                                span.label {{item.timeLabel}}
+                                span.label {{schedule.getScheduledStartFromFinish($index).format("h:mm a")}}
                             a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index)")
                                 i.fi-plus
                         div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
@@ -67,28 +67,52 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     label {{currentScheduleItem}}
                     span(ng-class="{'over-time': overtime}") {{mainTimerOutput}}
                     label until {{nextScheduleItem}}
-        div.row.countdown-control-container
+                    span(ng-class="{'red': stageMessage.red, 'motion': stageMessage.motion}") {{stageMessage.content}}
+        div.row.countdown-control-container(ng-show="schedule.live")
             div.small-12.columns.section-header(ng-click="showCountdownControl = !showCountdownControl")
                 span Control
             div.small-12.columns.section-contents(ng-show="showCountdownControl")
+                div.row.collapse.expanded
+                    div.small-6.columns.previous-schedule-item-action
+                        button.button(type="button")
+                            i.fi-rewind
+                            span {{previousScheduleItem}}
+                    div.small-6.columns.next-schedule-item-action
+                        button.button(type="button")
+                            i.fi-fast-forward
+                            span {{nextScheduleItem}}
         div.row.messages-control-container
             div.small-12.columns.section-header(ng-click="showMessageControl = !showMessageControl")
                 span Live Messages
             div.small-12.columns.section-contents(ng-show="showMessageControl")
+                div.row.collapse.expanded
+                    div.small-12.columns.message-window
+                        textarea.message-input(ng-model="stageMessage.content" ng-model-options="{ debounce: 1000 }")
+                    div.small-8.columns.message-options
+                        div.row
+                            div.small-6.columns
+                                md-switch(ng-model="stageMessage.red")
+                                    span Red
+                            div.small-6.columns
+                                md-switch.md-primary(ng-model="stageMessage.motion")
+                                    span Motion
+                    div.small-4.columns.message-actions
+                        button.button(type="button" ng-click="stageMessage.content.$rollbackViewValue(); stageMessage.content = ''") Clear
         div.row.chat-container
             div.small-12.columns.section-header(ng-click="showChat = !showChat")
                 span Chat
             div.small-12.columns.section-contents(ng-show="showChat")
-                div.small-12.columns.chat-window.inset(id="chat-window")
-                    div.row.column.chat-message(ng-repeat="chatMessage in chatLog" scroll='')
-                        div.sender-details(ng-class="chatMessage.class")
-                            span.sender-name {{chatMessage.sender}}
-                            span.timestamp {{chatMessage.timestamp.fromNow()}}
-                        div.message-card.card(ng-class="chatMessage.class")
-                            span.message-content {{chatMessage.message}}
-                div.small-12.columns.chat-input
-                    div.input-group
-                        input.input-group-field(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
-                        div.input-group-button
-                            button.button(type="button" ng-click="sendChatMessage()")
-                                span Send
+                div.row.collapse.expanded
+                    div.small-12.columns.chat-window.inset(id="chat-window")
+                        div.row.column.chat-message(ng-repeat="chatMessage in chatLog" scroll='')
+                            div.sender-details(ng-class="chatMessage.class")
+                                span.sender-name {{chatMessage.sender}}
+                                span.timestamp {{chatMessage.timestamp.fromNow()}}
+                            div.message-card.card(ng-class="chatMessage.class")
+                                span.message-content {{chatMessage.message}}
+                    div.small-12.columns.chat-input
+                        div.input-group
+                            input.input-group-field(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
+                            div.input-group-button
+                                button.button(type="button" ng-click="sendChatMessage()")
+                                    span Send
