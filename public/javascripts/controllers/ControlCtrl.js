@@ -14,7 +14,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         $scope.mainTimerOutput = (negative ? "-" : "")
                                  + (hour > 0 ? String("00" + hour + ":").slice(-3) : "")
                                  + String("00" + min + ":").slice(-3)
-                                 + String("00" + sec + ":").slice(-3);
+                                 + String("00" + sec).slice(-2);
 
         $scope.overTime = negative;
     });
@@ -22,6 +22,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     $scope.systemTimer.setOverCount(true).onTick(function() {
         $scope.currentTime = moment().format('h.mm:ss a');
         $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
+        $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
     }).start();
 
     SaveState();
@@ -77,11 +78,30 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         $scope.chatFocus = true;
     };
 
+    $scope.setCountdownFor = function(duration) {
+        TimerFactory.countDownFor('main-timer', duration * 60);
+    };
+
+    $scope.setCountdownTo = function(endTime) {
+        TimerFactory.countDownTo('main-timer', endTime);
+    };
+
+    $scope.stopTimer = function() {
+        $scope.mainTimer.stop();
+        $scope.overTime = false;
+        $scope.mainTimerOutput = "00:00"
+    };
+
+    $scope.showTimeUpAlert = function() {
+        $scope.mainTimer.stop();
+        $scope.mainTimerOutput = "Time's Up!"
+        $scope.overTime = true;
+    };
+
     function SaveState() {
         var resumeState = SessionFactory.getResumeState() || {};
 
         resumeState.role = 'control';
-        resumeState.schedule = $scope.schedule;
 
         SessionFactory.setResumeState(resumeState);
     }

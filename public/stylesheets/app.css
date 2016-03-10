@@ -211,6 +211,25 @@ a {
   padding: 10px;
 }
 
+.current-time-container span, .finish-time-container span {
+  font-size:  1.5rem;
+}
+
+.countdown-container .current-schedule-item-label {
+  font-size: 1.6rem;
+}
+
+.countdown-container .main-timer-label {
+  font-size: 4.5rem;
+  display: block;
+}
+
+.countdown-container .stage-message-label {
+  margin-top: 1rem;
+  font-size: 1.3rem;
+  display: block;
+}
+
 .section-header {
   color: white;
   background-color: #2199e8;
@@ -225,6 +244,26 @@ a {
 .section-contents {
   overflow-y: auto;
   padding: 0.5rem;
+}
+
+.countdown-timer-controls span {
+  white-space: nowrap;
+}
+
+.messages-control-container .message-window textarea {
+  margin-bottom: 0.5rem;
+}
+
+.messages-control-container .message-options md-switch {
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 2.7rem;
+}
+
+.messages-control-container .message-actions button {
+  margin-bottom: 0;
+  height: 2.7rem;
+  padding: 0;
 }
 
 .chat-container {
@@ -281,11 +320,11 @@ a {
   }
 
 @keyframes text-bulge {
-  0%, 100% {
-    font-size: 1.5rem;
+  0%, 30%, 70%, 100% {
+    opacity: 1;
   }
   50% {
-    font-size: 1.6rem;
+    opacity: 0;
   }
 }
 
@@ -293,8 +332,8 @@ span.red {
   color: #ee3050;
 }
 
-span.motion {
-  -webkit-animation: text-bulge 500ms infinite;
-  -o-animation: text-bulge 500ms infinite;
-  animation: text-bulge 500ms infinite;
+span.blink {
+  -webkit-animation: text-bulge 1s infinite ease-in;
+  -o-animation: text-bulge 1s infinite ease-in;
+  animation: text-bulge 1s infinite ease-in;
 }

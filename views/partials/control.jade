@@ -60,27 +60,50 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     span {{currentTime}}
             div.small-6.columns
                 div.finish-time-container.card.text-center
-                    label Serving will end in
+                    label {{serviceEndTimeLabel}}
                     span {{serviceEndTime}}
             div.small-12.columns
                 div.countdown-container.card.text-center
-                    label {{currentScheduleItem}}
-                    span(ng-class="{'over-time': overtime}") {{mainTimerOutput}}
-                    label until {{nextScheduleItem}}
-                    span(ng-class="{'red': stageMessage.red, 'motion': stageMessage.motion}") {{stageMessage.content}}
-        div.row.countdown-control-container(ng-show="schedule.live")
+                    label.current-schedule-item-label {{currentScheduleItem}}
+                    span.main-timer-label(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}
+                    span.stage-message-label(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
+        div.row.countdown-control-container
             div.small-12.columns.section-header(ng-click="showCountdownControl = !showCountdownControl")
                 span Control
             div.small-12.columns.section-contents(ng-show="showCountdownControl")
-                div.row.collapse.expanded
+                div.row.collapse.expanded.schedule-item-navigation-actions
                     div.small-6.columns.previous-schedule-item-action
-                        button.button(type="button")
+                        button.button.expanded(type="button")
                             i.fi-rewind
                             span {{previousScheduleItem}}
                     div.small-6.columns.next-schedule-item-action
-                        button.button(type="button")
-                            i.fi-fast-forward
+                        button.button.expanded(type="button")
                             span {{nextScheduleItem}}
+                            i.fi-fast-forward
+                div.row.collapse.expanded.countdown-timer-controls
+                    div.small-9.large-8.columns
+                        div.row.collapse.expanded
+                            div.small-12.large-6.columns.countdown-for-panel
+                                div.input-group
+                                    div.input-group-button
+                                        button.button(type="button" ng-click="setCountdownFor(newTimerDuration)")
+                                            span Time for
+                                    input.input-group-field(type="number" ng-model="newTimerDuration")
+                                    label.input-group-label minutes
+                            div.small-12.large-6.columns.countdown-to-panel
+                                div.input-group
+                                    div.input-group-button
+                                        button.button(type="button" ng-click="setCountdownTo(newTimerFinishTime)")
+                                            span Time to
+                                    input.input-group-field(type="time" ng-model="newTimerFinishTime")
+                    div.small-3.large-4.columns
+                        div.row.collapse.expanded
+                            div.small-12.large-6.columns
+                                button.button.expanded.warning(type="button" ng-click="stopTimer()")
+                                    i.fi-stop
+                            div.small-12.large-6.columns
+                                button.button.expanded.alert(type="button" ng-click="showTimeUpAlert()")
+                                    i.fi-alert
         div.row.messages-control-container
             div.small-12.columns.section-header(ng-click="showMessageControl = !showMessageControl")
                 span Live Messages
@@ -88,16 +111,16 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 div.row.collapse.expanded
                     div.small-12.columns.message-window
                         textarea.message-input(ng-model="stageMessage.content" ng-model-options="{ debounce: 1000 }")
-                    div.small-8.columns.message-options
+                    div.small-6.columns.message-options
                         div.row
                             div.small-6.columns
                                 md-switch(ng-model="stageMessage.red")
                                     span Red
                             div.small-6.columns
-                                md-switch.md-primary(ng-model="stageMessage.motion")
-                                    span Motion
+                                md-switch.md-primary(ng-model="stageMessage.blink")
+                                    span Blink
                     div.small-4.columns.message-actions
-                        button.button(type="button" ng-click="stageMessage.content.$rollbackViewValue(); stageMessage.content = ''") Clear
+                        button.button.expanded(type="button" ng-click="stageMessage.content.$rollbackViewValue(); stageMessage.content = ''") Clear
         div.row.chat-container
             div.small-12.columns.section-header(ng-click="showChat = !showChat")
                 span Chat

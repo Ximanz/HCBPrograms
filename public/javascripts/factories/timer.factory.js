@@ -64,8 +64,8 @@
             $timeout.cancel(this.timeout);
 
             this.tickFtns.forEach(function(ftn) {
-                ftn.call(this, obj.hours, obj.minutes, obj.seconds);
-            }, that);
+                ftn.call(this, 0, 0, 0);
+            }, this);
         };
 
         CountDownTimer.parse = function(seconds) {
@@ -101,9 +101,12 @@
                 }
             },
             countDownTo: function(timerKey, endTime, granularity, overCount) {
-                if (endTime.prototype.toString.call(date) !== '[object Date]') return;
+                if (endTime == undefined || !(endTime instanceof Date)) return;
 
-                var duration = (endTime.getTime() - Date.now()) / 1000;
+                var convertedEndTime = new Date();
+                convertedEndTime.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
+
+                var duration = (convertedEndTime.getTime() - Date.now()) / 1000;
                 var timer = countdownTimers[timerKey] || (countdownTimers[timerKey] = new CountDownTimer(duration));
                 timer.stop();
 
