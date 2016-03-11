@@ -90,6 +90,12 @@ a {
       margin-left: 0.7em;
     }
 
+.schedule-menu>button {
+  margin-bottom: 0;
+  line-height: 1.5;
+  float: right;
+}
+
 .schedule-name label {
   text-transform: uppercase;
   font-size: 0.8em;
@@ -366,6 +372,24 @@ a {
   position: absolute;
   width: 100%;
   height: 100%;
+  color: #eee;
+}
+
+.output-viewport label {
+  font-size: 1.2rem;
+  color: #909090;
+}
+
+.output-viewport span {
+  font-size: 2.2rem;
+}
+
+.current-time-output, .finish-time-output {
+  margin: 0.5rem 0;
+}
+
+.countdown-output-container {
+
 }
   
 @keyframes text-bulge {
