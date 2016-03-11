@@ -95,7 +95,6 @@
                 var timer = TimerFactory.getTimer('main-timer');
                 var data = {
                     finish: timer.finish,
-                    duration: timer.duration,
                     running: timer.running,
                     overCount: timer.overCount,
                     granularity: timer.granularity

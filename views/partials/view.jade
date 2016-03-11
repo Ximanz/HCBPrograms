@@ -1,1 +1,31 @@
-div.off-canvas-content(data-off-canvas-content='')
+div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
+    div.off-canvas-content.output-window(data-off-canvas-content='')
+        md-fab-toolbar(md-direction="left")
+            md-fab-trigger
+                md-button.md-fab.md-primary(aria-label="menu")
+                    md-icon(md-svg-icon="navigation:menu-24")
+            md-toolbar
+                md-fab-actions.md-toolbar-tools
+                    md-button.md-icon-button
+                        md-icon(md-svg-icon="navigation:chevron-right-24")
+                    md-button.md-icon-button
+                        md-icon(md-svg-icon="action:power-24")
+                    md-button.md-icon-button
+                        md-icon(md-svg-icon="hardware:keyboard-24")
+        div.row.expanded.output-viewport
+            div.small-6.medium-3.columns
+                div.current-time-output.text-center
+                    label It's now
+                    span {{currentTime}}
+            div.small-6.medium-9.columns
+            div.small-6.medium-3.columns
+                div.finish-time-output.card.text-center
+                    label {{serviceEndTimeLabel}}
+                    span {{serviceEndTime}}
+            div.small-12.columns
+                div.countdown-output-container.text-center
+                    label.current-schedule-item-output {{currentScheduleItem}}
+                    span.main-timer-output(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}
+                    label.next-schedule-item-output {{nextScheduleItem}}
+                    span.stage-message-label(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
+

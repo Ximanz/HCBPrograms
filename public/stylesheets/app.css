@@ -196,6 +196,22 @@ a {
     position: relative;
   }
 
+.live-view-button span {
+    margin-left: 5px;
+}
+
+.control-options-panel {
+  margin: 10px;
+  background-color: white;
+}
+
+.control-options-panel-menu-bar {
+  background-color: #2199e8;
+  color: white;
+  min-height: 3rem;
+  padding: 10px 10px;
+}
+
 .off-canvas-content {
 
 }
@@ -222,6 +238,7 @@ a {
 .countdown-container .main-timer-label {
   font-size: 4.5rem;
   display: block;
+  font-family: 'Alegreya+SC', 'Roboto', sans-serif;
 }
 
 .countdown-container .stage-message-label {
@@ -243,12 +260,22 @@ a {
 
 .section-contents {
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0.5rem;
 }
 
 .countdown-timer-controls span {
   white-space: nowrap;
 }
+
+.countdown-timer-controls button {
+  width: 6rem;
+}
+
+.countdown-timer-controls button, .countdown-timer-controls input {
+  height: 2.7rem;
+}
+
 
 .messages-control-container .message-window textarea {
   margin-bottom: 0.5rem;
@@ -277,6 +304,11 @@ a {
     width: 100%;
   }
 
+  .chat-container .chat-window>.row.column.chat-message {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   .chat-container .chat-window .message-card {
     width: 50%;
     float: left;
@@ -291,7 +323,7 @@ a {
 
   .chat-container .chat-window .sender-details {
     float: left;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     margin: 6px 5px 0 0;
   }
 
@@ -303,6 +335,8 @@ a {
   .chat-container .chat-window .sender-details span.timestamp {
     font-style: italic;
     color: slategray;
+    font-size: 0.7rem;
+    margin-top: 3px;
   }
 
   .chat-container .chat-window .sender-details.sender span {
@@ -319,6 +353,21 @@ a {
     border-top: rgba(20, 50, 200, 0.6) 2px solid;
   }
 
+.output-window {
+  background-image: url('../images/background_tile_dark.png');
+}
+
+.output-window>md-fab-toolbar {
+  position: absolute;
+  width: 100%;
+}
+
+.output-viewport {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+  
 @keyframes text-bulge {
   0%, 30%, 70%, 100% {
     opacity: 1;

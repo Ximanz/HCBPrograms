@@ -7,6 +7,7 @@
             this.tickFtns = [];
             this.overCount = false;
             this.running = false;
+            this.timeup = false;
         }
 
         CountDownTimer.prototype.start = function() {
@@ -14,12 +15,12 @@
                 return;
             }
             this.running = true;
-            var finish = Date.now() + this.duration * 1000,
-                self = this,
+            this.finish = Date.now() + this.duration * 1000;
+            var self = this,
                 diff, obj;
 
             (function timer() {
-                diff = Math.floor((finish - Date.now()) / 1000);
+                diff = Math.floor((self.finish - Date.now()) / 1000);
 
                 if (diff > 0 || self.overCount) {
                     self.timeout = $timeout(timer, self.granularity, true);
@@ -57,8 +58,6 @@
         };
 
         CountDownTimer.prototype.stop = function() {
-            if (!this.running) return;
-
             this.duration = 0;
             this.running = false;
             $timeout.cancel(this.timeout);
@@ -72,7 +71,7 @@
             return {
                 'negative'  : seconds < 0,
                 'hours'     : Math.floor(Math.abs(seconds) / 3600),
-                'minutes'   : Math.floor(Math.abs(seconds) / 60),
+                'minutes'   : Math.floor(Math.abs(seconds % 3600) / 60),
                 'seconds'   : Math.floor(Math.abs(seconds) % 60)
             };
         };

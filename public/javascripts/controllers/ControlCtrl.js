@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
+angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
     $scope.schedule = ScheduleFactory.getSchedule();
 
     $scope.mainTimer = TimerFactory.getTimer('main-timer');
@@ -11,12 +11,17 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     $scope.mainTimerOutput = "00:00";
 
     $scope.mainTimer.onTick(function(hour, min, sec, negative) {
-        $scope.mainTimerOutput = (negative ? "-" : "")
-                                 + (hour > 0 ? String("00" + hour + ":").slice(-3) : "")
-                                 + String("00" + min + ":").slice(-3)
-                                 + String("00" + sec).slice(-2);
+        if ($scope.mainTimer.timeup) {
+            $scope.mainTimerOutput = "Time's Up!";
+            $scope.overTime = true;
+        } else {
+            $scope.mainTimerOutput = (negative ? "-" : "")
+                + (hour > 0 ? String("00" + hour + ":").slice(-3) : "")
+                + String("00" + min + ":").slice(-3)
+                + String("00" + sec).slice(-2);
 
-        $scope.overTime = negative;
+            $scope.overTime = negative;
+        }
     });
 
     $scope.systemTimer.setOverCount(true).onTick(function() {
@@ -30,6 +35,10 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     $scope.sortableOptions = {
         handle: '.handle',
         axis: 'y'
+    };
+
+    $scope.goToLiveView = function() {
+        $location.path("/view");
     };
 
     $scope.loadSchedules = function() {
@@ -80,22 +89,24 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
 
     $scope.setCountdownFor = function(duration) {
         TimerFactory.countDownFor('main-timer', duration * 60);
+        SocketFactory.updateTimer();
     };
 
     $scope.setCountdownTo = function(endTime) {
         TimerFactory.countDownTo('main-timer', endTime);
+        SocketFactory.updateTimer();
     };
 
     $scope.stopTimer = function() {
+        $scope.mainTimer.timeup = false;
         $scope.mainTimer.stop();
-        $scope.overTime = false;
-        $scope.mainTimerOutput = "00:00"
+        SocketFactory.updateTimer();
     };
 
     $scope.showTimeUpAlert = function() {
+        $scope.mainTimer.timeup = true;
         $scope.mainTimer.stop();
-        $scope.mainTimerOutput = "Time's Up!"
-        $scope.overTime = true;
+        SocketFactory.updateTimer();
     };
 
     function SaveState() {
