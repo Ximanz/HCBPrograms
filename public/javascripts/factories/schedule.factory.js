@@ -6,19 +6,19 @@
             this.finishTime = finishTime || new Date(new Date().setHours(18,0,0,0));
             this.scheduleItems = [];
             this.live = false;
+            this.currentScheduleItemNumber = -1;
         }
 
         Schedule.prototype.currentItem = function() {
-            return this.scheduleItems.find(function(scheduleItem) {
-                return scheduleItem.live;
-            });
+            if (!this.live) return null;
+
+            return this.scheduleItems[this.currentScheduleItemNumber];
         };
 
         Schedule.prototype.addItem = function(name, duration) {
             this.scheduleItems.push({
                 name: name,
-                duration: duration,
-                live: false
+                duration: duration
             });
 
             return this;
@@ -27,15 +27,23 @@
         Schedule.prototype.insertItem = function(index, name, duration) {
             this.scheduleItems.splice(index, 0, {
                 name: name,
-                duration: duration,
-                live: false
+                duration: duration
             });
+
+            if (index <= this.currentScheduleItemNumber) this.currentScheduleItemNumber++;
 
             return this;
         };
 
         Schedule.prototype.removeItem = function(index) {
+            if (index == this.currentScheduleItemNumber && this.live) {
+                NotificationFactory.displayOne({type: 'error', content: this.scheduleItems[index].name + " is currently live and cannot be removed"});
+                return;
+            }
+
             this.scheduleItems.splice(index, 1);
+
+            if (index < this.currentScheduleItemNumber) this.currentScheduleItemNumber--;
 
             return this;
         };
@@ -121,6 +129,10 @@
                             NotificationFactory.displayAll(response.data.messages);
                         }
                     );
+            },
+            startSchedule: function() {
+                _schedule.live = true;
+                _schedule.currentScheduleItemNumber = 0;
             }
         }
     }

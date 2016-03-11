@@ -1,21 +1,17 @@
 (function (angular) {
-    function DisplayFactory($rootScope) {
-        var _currentScheduleItemOutput = "";
-        var _mainDisplayOutput = "";
-        var _nextScheduleItemOutput = "";
-        var _stageMessageOutput = "";
+    function DisplayFactory() {
+        var _stageMessage = {
+            content: "",
+            red: false,
+            blink: false
+        };
 
         return {
-            getChatLog: function() {
-                return _chatLog;
-            },
-            clearChatLog: function() {
-                _chatLog.length = 0;
+            getStageMessage: function() {
+                return _stageMessage;
             }
         }
     }
-
-    DisplayFactory.$inject = ['$rootScope'];
 
     angular
         .module('HCBPrograms')

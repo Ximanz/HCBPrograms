@@ -1,4 +1,5 @@
 angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location, AuthFactory, SessionFactory) {
+    $scope.pageClass = 'login-screen';
     var resumeState = SessionFactory.getResumeState();
     if (resumeState != undefined) {
         switch (resumeState.role) {

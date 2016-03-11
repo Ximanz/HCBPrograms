@@ -1,15 +1,15 @@
 $(document).foundation();
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('HCBPrograms', ['ngResource', 'ngRoute', 'ui-notification', 'ui.sortable', 'rzModule', 'mm.foundation', 'ngMaterial']);
+var app = angular.module('HCBPrograms', ['ngResource', 'ngRoute', 'ngAnimate', 'ui-notification', 'ui.sortable', 'rzModule', 'mm.foundation', 'ngMaterial']);
 
 angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', '$httpProvider', '$mdIconProvider', 'NotificationProvider', function($routeProvider, $locationProvider, $httpProvider, $mdIconProvider, NotificationProvider) {
     $locationProvider.html5Mode(true);
 
     $routeProvider
-        .when("/", { templateUrl: "partials/index.jade", controller: "HomeCtrl" })
-        .when("/view", { templateUrl: "partials/view.jade", controller: "ViewCtrl" })
-        .when("/control", { templateUrl: "partials/control.jade", controller: "ControlCtrl" })
+        .when("/", { templateUrl: "partials/index.jade", controller: "HomeCtrl", animation: "login-screen" })
+        .when("/view", { templateUrl: "partials/view.jade", controller: "ViewCtrl", animation: "view-screen" })
+        .when("/control", { templateUrl: "partials/control.jade", controller: "ControlCtrl", animation: "control-screen" })
         .otherwise({ redirectTo: "/" });
 
     $httpProvider.interceptors.push('TokenInterceptor');

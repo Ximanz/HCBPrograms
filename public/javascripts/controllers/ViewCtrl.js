@@ -1,4 +1,5 @@
-angular.module('HCBPrograms').controller("ViewCtrl", function($scope, SessionFactory, ScheduleFactory, TimerFactory, SocketFactory, NotificationFactory) {
+angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location, SessionFactory, ScheduleFactory, TimerFactory, SocketFactory) {
+    $scope.pageClass = 'view-screen';
     $scope.schedule = ScheduleFactory.getSchedule();
 
     $scope.mainTimer = TimerFactory.getTimer('main-timer');
@@ -34,16 +35,16 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, SessionFac
         $location.path("/control");
     };
 
-    $scope.showTimeUpAlert = function() {
-        $scope.mainTimer.stop();
-        $scope.mainTimerOutput = "Time's Up!"
-        $scope.overTime = true;
-    };
+    $scope.logout = function() {
+        SessionFactory.destroy();
+        SocketFactory.getSocket().disconnect();
+        $location.path("/");
+    }
 
     function SaveState() {
         var resumeState = SessionFactory.getResumeState() || {};
 
-        resumeState.role = 'control';
+        resumeState.role = 'view';
 
         SessionFactory.setResumeState(resumeState);
     }

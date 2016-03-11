@@ -8,9 +8,9 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 md-fab-actions.md-toolbar-tools
                     md-button.md-icon-button
                         md-icon(md-svg-icon="navigation:chevron-right-24")
-                    md-button.md-icon-button
+                    md-button.md-icon-button(ng-click="logout()")
                         md-icon(md-svg-icon="action:power-24")
-                    md-button.md-icon-button
+                    md-button.md-icon-button(ng-click="goToControlView()")
                         md-icon(md-svg-icon="hardware:keyboard-24")
         div.row.expanded.output-viewport
             div.small-6.medium-3.columns
@@ -18,10 +18,13 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     label It's now
                     span {{currentTime}}
             div.small-6.medium-9.columns
+                div
             div.small-6.medium-3.columns
-                div.finish-time-output.card.text-center
+                div.finish-time-output.text-center
                     label {{serviceEndTimeLabel}}
                     span {{serviceEndTime}}
+            div.small-6.medium-9.columns
+                div
             div.small-12.columns
                 div.countdown-output-container.text-center
                     label.current-schedule-item-output {{currentScheduleItem}}

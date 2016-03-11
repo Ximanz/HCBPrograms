@@ -17,7 +17,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                     span Save
         div.row
             div.small-12.columns.schedule-name
-                input(type='text' ng-model="schedule.name" placeholder="Schedule Name")
+                input(type='text' ng-model="schedule.name" ng-model-options="{ updateOn: 'blur' }" placeholder="Schedule Name")
             div.small-12.columns.schedule-finish-time
                 div.input-group
                     span.input-group-label finish time
@@ -33,7 +33,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 span {{item.name}}
                             div.schedule-item-finish-time
                                 span.label {{schedule.getScheduledStartFromFinish($index).format("h:mm a")}}
-                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index)")
+                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index);$event.stopPropagation();")
                                 i.fi-plus
                         div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
                             input.duration-input(type="number" ng-model="item.duration" ng-model-options="{ updateOn: 'blur' }")
@@ -76,6 +76,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 div.countdown-container.card.text-center
                     label.current-schedule-item-label {{currentScheduleItem}}
                     span.main-timer-label(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}
+                    label.current-schedule-item-label {{nextScheduleItem}}
                     span.stage-message-label(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
         div.row.countdown-control-container
             div.small-12.columns.section-header(ng-click="showControl = (showControl == 'countdown') ? '' : 'countdown'")
@@ -83,11 +84,11 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
             div.small-12.columns.section-contents(ng-show="showControl == 'countdown'")
                 div.row.collapse.expanded.schedule-item-navigation-actions(ng-show="schedule.live")
                     div.small-6.columns.previous-schedule-item-action
-                        button.button.expanded(type="button")
+                        button.button.expanded(type="button" ng-show="previousScheduleItem" ng-click="goToPreviousScheduleItem()")
                             i.fi-rewind
                             span {{previousScheduleItem}}
                     div.small-6.columns.next-schedule-item-action
-                        button.button.expanded(type="button")
+                        button.button.expanded(type="button" ng-show="nextScheduleItem" ng-click="goToNextScheduleItem()")
                             span {{nextScheduleItem}}
                             i.fi-fast-forward
                 div.row.expanded.countdown-timer-controls

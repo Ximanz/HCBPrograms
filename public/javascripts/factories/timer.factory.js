@@ -1,6 +1,5 @@
 (function (angular) {
     function TimerFactory($timeout) {
-        // CountDownTimer
         function CountDownTimer(duration, granularity) {
             this.duration = duration;
             this.granularity = granularity || 1000;
@@ -111,6 +110,7 @@
 
                 if (granularity) timer.granularity = granularity;
                 if (overCount) timer.overCount = overCount;
+                timer.timeout = false;
                 timer.setDuration(duration).start();
             },
             countDownFor: function(timerKey, duration, granularity, overCount) {
@@ -121,6 +121,7 @@
 
                 if (granularity) timer.granularity = granularity;
                 if (overCount) timer.overCount = overCount;
+                timer.timeout = false;
                 timer.setDuration(duration).start();
             }
         }

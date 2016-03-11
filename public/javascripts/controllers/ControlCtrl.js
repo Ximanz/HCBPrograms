@@ -1,4 +1,5 @@
-angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
+angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
+    $scope.pageClass = 'control-screen';
     $scope.schedule = ScheduleFactory.getSchedule();
 
     $scope.mainTimer = TimerFactory.getTimer('main-timer');
@@ -37,6 +38,17 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         axis: 'y'
     };
 
+    $timeout(function(){
+        $scope.$watch('schedule.name', function() {
+            SocketFactory.updateSchedule();
+        });
+
+        $scope.$watch('schedule.finishTime', function() {
+            SocketFactory.updateSchedule();
+        });
+    }, 10000);
+
+
     $scope.goToLiveView = function() {
         $location.path("/view");
     };
@@ -56,6 +68,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
 
                 modalInstance.result.then(function(schedule) {
                     ScheduleFactory.loadSchedule(schedule.name);
+                    SocketFactory.updateSchedule();
                 })
             }, function(error){
 
@@ -77,8 +90,34 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
 
         modalInstance.result.then(function(scheduleItem) {
             $scope.schedule.insertItem(index, scheduleItem.name, scheduleItem.duration);
-            SaveState();
+            SocketFactory.updateSchedule();
         })
+    };
+
+    $scope.startSchedule = function() {
+        ScheduleFactory.startSchedule();
+        SocketFactory.updateSchedule();
+        $scope.startScheduleItem(schedule.currentScheduleItemNumber);
+    };
+
+    $scope.goToNextScheduleItem = function() {
+        if (schedule.currentScheduleItemNumber < schedule.scheduleItems.length - 1) {
+            schedule.currentScheduleItemNumber++;
+            $scope.startScheduleItem(schedule.currentScheduleItemNumber);
+        }
+    };
+
+    $scope.goToPreviousScheduleItem = function() {
+        if (schedule.currentScheduleItemNumber > 0) {
+            schedule.currentScheduleItemNumber--;
+            $scope.startScheduleItem(schedule.currentScheduleItemNumber);
+        }
+    };
+
+    $scope.startScheduleItem = function(index) {
+        $scope.previousScheduleItem = (index > 0) ? schedule.scheduleItems[index-1] : "";
+        $scope.currentScheduleItem = schedule.scheduleItems[index].name;
+        $scope.nextScheduleItem = (index < schedule.scheduleItems.length - 1) ? schedule.scheduleItems[index+1] : "";
     };
 
     $scope.sendChatMessage = function() {
@@ -108,6 +147,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         $scope.mainTimer.stop();
         SocketFactory.updateTimer();
     };
+
 
     function SaveState() {
         var resumeState = SessionFactory.getResumeState() || {};

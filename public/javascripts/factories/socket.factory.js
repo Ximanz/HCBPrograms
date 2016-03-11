@@ -1,5 +1,5 @@
 (function (angular) {
-    function SocketFactory(SessionFactory, TimerFactory, ScheduleFactory, ChatFactory, $q) {
+    function SocketFactory(SessionFactory, TimerFactory, ScheduleFactory, ChatFactory, DisplayFactory, $q) {
         var _socket, _isAuthenticated;
 
         return {
@@ -65,7 +65,22 @@
                     var timerSettings = JSON.parse(data);
                     if (!timerSettings.running) return;
 
-                    TimerFactory.countDownTo('main-timer', new Date(timerSettings.finish), timerSettings.granularity, timerSettings.overCount);
+                    if (timerSettings.timeout) {
+                        var timer = TimerFactory.getTimer('main-timer');
+                        timer.timeout = true;
+                        timer.stop();
+                    } else {
+                        TimerFactory.countDownTo('main-timer', new Date(timerSettings.finish), timerSettings.granularity, timerSettings.overCount);
+                    }
+                });
+
+                _socket.on('update stage message', function(data) {
+                    if (!data || data.length == 0) return;
+
+                    var newStageMessage = JSON.parse(data);
+
+                    var stageMessage = DisplayFactory.getStageMessage();
+                    stageMessage = angular.copy(stageMessage);
                 });
             },
             sendChatMessage: function(message) {
@@ -97,14 +112,23 @@
                     finish: timer.finish,
                     running: timer.running,
                     overCount: timer.overCount,
-                    granularity: timer.granularity
+                    granularity: timer.granularity,
+                    timeout: timer.timeout
                 };
                 _socket.emit('update timer', angular.toJson(data));
+            },
+            getStageMessage: function() {
+                _socket.emit('get stage message');
+            },
+            updateStageMessage: function() {
+                var stageMessage = DisplayFactory.getStageMessage();
+
+                _socket.emit('update stage message', angular.toJson(stageMessage));
             }
         }
     }
 
-    SocketFactory.$inject = ['SessionFactory', 'TimerFactory', 'ScheduleFactory', 'ChatFactory', '$q'];
+    SocketFactory.$inject = ['SessionFactory', 'TimerFactory', 'ScheduleFactory', 'ChatFactory', 'DisplayFactory', '$q'];
 
     angular
         .module('HCBPrograms')

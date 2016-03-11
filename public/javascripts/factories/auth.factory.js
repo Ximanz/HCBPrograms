@@ -13,6 +13,7 @@
                     })
                     .then(function(res){
                         SessionFactory.setUser(res.data.user);
+                        SessionFactory.setScreenName(res.data.user.screenName);
                         SessionFactory.setAccessToken(res.data.token);
                         SessionFactory.setExpiry(res.data.expires);
                         return res;

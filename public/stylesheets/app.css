@@ -377,6 +377,35 @@ a {
   }
 }
 
+@keyframes scaleUp {
+  from    { opacity: 0.5; -webkit-transform: scale(0.5); }
+}
+
+@keyframes slideInRight {
+  from    { transform:translateX(100%); }
+  to      { transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+  from    { transform:translateX(0); }
+  to      { transform: translateX(-100%); }
+}
+
+@keyframes slideInLeft {
+  from    { transform: translateX(-100%); }
+  to      { transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from    { transform:translateY(100%); }
+  to      { transform: translateY(0); }
+}
+
+@keyframes slideOutDown {
+  from    { transform:translateY(0); }
+  to      { transform: translateY(100%); }
+}
+
 span.red {
   color: #ee3050;
 }
@@ -385,4 +414,35 @@ span.blink {
   -webkit-animation: text-bulge 1s infinite ease-in;
   -o-animation: text-bulge 1s infinite ease-in;
   animation: text-bulge 1s infinite ease-in;
+}
+
+.login-screen.ng-enter {
+  animation: slideInRight 0.5s ease-in;
+}
+
+.login-screen.ng-leave {
+  animation: slideOutLeft 0.5s ease-in;
+}
+
+.control-screen.ng-enter {
+  animation: slideInRight 0.5s ease-in;
+}
+
+.control-screen.ng-leave {
+  animation: slideOutLeft 0.5s ease-in;
+}
+
+.view-screen.ng-enter {
+  animation: slideInRight 0.5s ease-in;
+}
+
+.view-screen.ng-leave {
+  animation: slideOutLeft 0.5s ease-in;
+}
+
+.ng-enter {
+  z-index: 5555;
+}
+.ng-leave {
+  z-index: 6666;
 }
