@@ -1,7 +1,7 @@
 div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
     div.off-canvas.position-left.reveal-for-medium(id="offCanvasLeft" data-off-canvas='')
-        div.row.schedule-panel-menu-bar
-            div.small-12.columns.schedule-menu
+        div.row.collapse.schedule-panel-menu-bar
+            div.small-3.columns.schedule-menu
                 ul.dropdown.menu(data-dropdown-menu='')
                     li
                         button.button(type="button")
@@ -15,6 +15,10 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 button.button.text-left(type="button" ng-click="saveSchedule()")
                                     i.fi-save.raised
                                     span Save
+            div.small-9.columns.schedule-menu
+                button.button.success(type="button" ng-click="startSchedule()" ng-hide="schedule.live")
+                    i.fi-play
+                    span Start Schedule
         div.row
             div.small-12.columns.schedule-name
                 input(type='text' ng-model="schedule.name" ng-model-options="{ updateOn: 'blur' }" placeholder="Schedule Name")

@@ -96,28 +96,30 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
 
     $scope.startSchedule = function() {
         ScheduleFactory.startSchedule();
+        $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber);
         SocketFactory.updateSchedule();
-        $scope.startScheduleItem(schedule.currentScheduleItemNumber);
     };
 
     $scope.goToNextScheduleItem = function() {
-        if (schedule.currentScheduleItemNumber < schedule.scheduleItems.length - 1) {
-            schedule.currentScheduleItemNumber++;
-            $scope.startScheduleItem(schedule.currentScheduleItemNumber);
+        if ($scope.schedule.currentScheduleItemNumber < $scope.schedule.scheduleItems.length - 1) {
+            $scope.schedule.currentScheduleItemNumber++;
+            $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber);
+            SocketFactory.updateSchedule();
         }
     };
 
     $scope.goToPreviousScheduleItem = function() {
-        if (schedule.currentScheduleItemNumber > 0) {
-            schedule.currentScheduleItemNumber--;
-            $scope.startScheduleItem(schedule.currentScheduleItemNumber);
+        if ($scope.schedule.currentScheduleItemNumber > 0) {
+            $scope.schedule.currentScheduleItemNumber--;
+            $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber);
+            SocketFactory.updateSchedule();
         }
     };
 
     $scope.startScheduleItem = function(index) {
-        $scope.previousScheduleItem = (index > 0) ? schedule.scheduleItems[index-1] : "";
-        $scope.currentScheduleItem = schedule.scheduleItems[index].name;
-        $scope.nextScheduleItem = (index < schedule.scheduleItems.length - 1) ? schedule.scheduleItems[index+1] : "";
+        $scope.previousScheduleItem = (index > 0) ? $scope.schedule.scheduleItems[index-1] : "";
+        $scope.currentScheduleItem = $scope.schedule.scheduleItems[index].name;
+        $scope.nextScheduleItem = (index < $scope.schedule.scheduleItems.length - 1) ? $scope.schedule.scheduleItems[index+1].name : "";
     };
 
     $scope.sendChatMessage = function() {

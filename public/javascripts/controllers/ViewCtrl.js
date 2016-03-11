@@ -24,7 +24,7 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
     });
 
     $scope.systemTimer.setOverCount(true).onTick(function() {
-        $scope.currentTime = moment().format('h.mm:ss a');
+        $scope.currentTime = moment().format('h:mm:ss a');
         $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
         $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
     }).start();
