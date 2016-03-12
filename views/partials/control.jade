@@ -15,10 +15,10 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 button.button.text-left(type="button" ng-click="saveSchedule()")
                                     i.fi-save.raised
                                     span Save
-            div.small-9.columns.schedule-menu
-                button.button.success(type="button" ng-click="startSchedule()" ng-hide="schedule.live")
-                    i.fi-play
-                    span Start Schedule
+            div.small-9.columns#schedule-action-menu
+                button.button(type="button" ng-click="schedule.live ? cancelSchedule() : startSchedule()" ng-class="{'success': !schedule.live, 'alert': schedule.live}")
+                    i(ng-class="{'fi-play': !schedule.live, 'fi-stop': schedule.live}")
+                    span Schedule
         div.row
             div.small-12.columns.schedule-name
                 input(type='text' ng-model="schedule.name" ng-model-options="{ updateOn: 'blur' }" placeholder="Schedule Name")
@@ -29,15 +29,15 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
         div.row
             div.small-12.columns.schedule-item-list-container
                 div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
-                    div.schedule-item.card(ng-repeat="item in schedule.scheduleItems")
+                    div.schedule-item.card(ng-repeat="item in schedule.scheduleItems" ng-class="{'done':$index < schedule.currentScheduleItemNumber, 'live': $index == schedule.currentScheduleItemNumber}")
                         div.schedule-item-header(ng-click="isExpanded = !isExpanded")
                             div.handle
                                 i.fi-braille
                             div.span.schedule-item-name
                                 span {{item.name}}
                             div.schedule-item-finish-time
-                                span.label {{schedule.getScheduledStartFromFinish($index).format("h:mm a")}}
-                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index);$event.stopPropagation();")
+                                span {{schedule.getScheduledStartFromFinish($index).format("h:mm a")}}
+                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index);$event.stopPropagation();" ng-hide="$index <= schedule.currentScheduleItemNumber")
                                 i.fi-plus
                         div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
                             input.duration-input(type="number" ng-model="item.duration" ng-model-options="{ updateOn: 'blur' }")
@@ -80,19 +80,19 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 div.countdown-container.card.text-center
                     label.current-schedule-item-label {{currentScheduleItem}}
                     span.main-timer-label(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}
-                    label.current-schedule-item-label {{nextScheduleItem}}
+                    label.next-schedule-item-label {{nextScheduleItem}}
                     span.stage-message-label(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
         div.row.countdown-control-container
             div.small-12.columns.section-header(ng-click="showControl = (showControl == 'countdown') ? '' : 'countdown'")
                 span Control
             div.small-12.columns.section-contents(ng-show="showControl == 'countdown'")
-                div.row.collapse.expanded.schedule-item-navigation-actions(ng-show="schedule.live")
+                div.row.expanded.schedule-item-navigation-actions(ng-show="schedule.live")
                     div.small-6.columns.previous-schedule-item-action
-                        button.button.expanded(type="button" ng-show="previousScheduleItem" ng-click="goToPreviousScheduleItem()")
+                        button.button.expanded.warning(type="button" ng-show="previousScheduleItem" ng-click="goToPreviousScheduleItem()")
                             i.fi-rewind
                             span {{previousScheduleItem}}
                     div.small-6.columns.next-schedule-item-action
-                        button.button.expanded(type="button" ng-show="nextScheduleItem" ng-click="goToNextScheduleItem()")
+                        button.button.expanded.success(type="button" ng-show="nextScheduleItem" ng-click="goToNextScheduleItem()")
                             span {{nextScheduleItem}}
                             i.fi-fast-forward
                 div.row.expanded.countdown-timer-controls

@@ -11,7 +11,9 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location,
                     SocketFactory.configure();
                     SocketFactory.getSchedule();
                     SocketFactory.getTimer();
+                    SocketFactory.getStageMessage();
                     SocketFactory.getChatLog();
+                    $scope.$emit('socket-established');
                 },
                 function(){
                     console.log("Main controller socket failed");

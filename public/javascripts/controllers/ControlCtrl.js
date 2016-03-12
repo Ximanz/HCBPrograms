@@ -1,44 +1,39 @@
-angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, ChatFactory, SocketFactory, NotificationFactory) {
+angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, DisplayFactory, ChatFactory, SocketFactory, NotificationFactory) {
     $scope.pageClass = 'control-screen';
-    $scope.schedule = ScheduleFactory.getSchedule();
 
-    $scope.mainTimer = TimerFactory.getTimer('main-timer');
-    $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
+    $scope.$on('socket-established', function() {
+        $scope.schedule = ScheduleFactory.getSchedule();
+        $scope.mainTimer = TimerFactory.getTimer('main-timer');
+        $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
+        $scope.stageMessage = DisplayFactory.getStageMessage();
+        $scope.chatLog = ChatFactory.getChatLog();
 
-    $scope.chatLog = ChatFactory.getChatLog();
-    $scope.scheduleList = [];
-    $scope.currentTime = "";
-    $scope.serviceEndTime = "";
-    $scope.mainTimerOutput = "00:00";
+        $scope.mainTimer.onTick(function(hour, min, sec, negative) {
+            if ($scope.mainTimer.timeup) {
+                $scope.mainTimerOutput = "Time's Up!";
+                $scope.overTime = true;
+            } else {
+                $scope.mainTimerOutput = (negative ? "-" : "")
+                    + (hour > 0 ? String("00" + hour + ":").slice(-3) : "")
+                    + String("00" + min + ":").slice(-3)
+                    + String("00" + sec).slice(-2);
 
-    $scope.mainTimer.onTick(function(hour, min, sec, negative) {
-        if ($scope.mainTimer.timeup) {
-            $scope.mainTimerOutput = "Time's Up!";
-            $scope.overTime = true;
-        } else {
-            $scope.mainTimerOutput = (negative ? "-" : "")
-                + (hour > 0 ? String("00" + hour + ":").slice(-3) : "")
-                + String("00" + min + ":").slice(-3)
-                + String("00" + sec).slice(-2);
+                $scope.overTime = negative;
+            }
+        });
 
-            $scope.overTime = negative;
-        }
-    });
+        $scope.systemTimer.setOverCount(true).onTick(function() {
+            $scope.currentTime = moment().format('h:mm:ss a');
+            if ($scope.schedule.live) {
+                $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
+                $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
+            } else {
+                $scope.serviceEndTimeLabel = "";
+                $scope.serviceEndTime = "Schedule Not Started";
+            }
 
-    $scope.systemTimer.setOverCount(true).onTick(function() {
-        $scope.currentTime = moment().format('h.mm:ss a');
-        $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
-        $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
-    }).start();
+        }).start();
 
-    SaveState();
-
-    $scope.sortableOptions = {
-        handle: '.handle',
-        axis: 'y'
-    };
-
-    $timeout(function(){
         $scope.$watch('schedule.name', function() {
             SocketFactory.updateSchedule();
         });
@@ -46,8 +41,29 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         $scope.$watch('schedule.finishTime', function() {
             SocketFactory.updateSchedule();
         });
-    }, 10000);
 
+        $scope.$watch('stageMessage', function() {
+            SocketFactory.updateStageMessage();
+        });
+
+        if ($scope.schedule.live) {
+            $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber);
+        }
+    });
+
+
+    $scope.scheduleList = [];
+    $scope.currentTime = "";
+    $scope.serviceEndTime = "";
+    $scope.mainTimerOutput = "00:00";
+
+
+    SaveState();
+
+    $scope.sortableOptions = {
+        handle: '.handle',
+        axis: 'y'
+    };
 
     $scope.goToLiveView = function() {
         $location.path("/view");
@@ -100,6 +116,15 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         SocketFactory.updateSchedule();
     };
 
+    $scope.cancelSchedule = function() {
+        ScheduleFactory.cancelSchedule();
+        $scope.previousScheduleItem = "";
+        $scope.currentScheduleItem = "";
+        $scope.nextScheduleItem = "";
+        $scope.stopTimer();
+        SocketFactory.updateSchedule();
+    };
+
     $scope.goToNextScheduleItem = function() {
         if ($scope.schedule.currentScheduleItemNumber < $scope.schedule.scheduleItems.length - 1) {
             $scope.schedule.currentScheduleItemNumber++;
@@ -117,7 +142,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     };
 
     $scope.startScheduleItem = function(index) {
-        $scope.previousScheduleItem = (index > 0) ? $scope.schedule.scheduleItems[index-1] : "";
+        $scope.previousScheduleItem = (index > 0) ? $scope.schedule.scheduleItems[index-1].name : "";
         $scope.currentScheduleItem = $scope.schedule.scheduleItems[index].name;
         $scope.nextScheduleItem = (index < $scope.schedule.scheduleItems.length - 1) ? $scope.schedule.scheduleItems[index+1].name : "";
     };

@@ -63,6 +63,8 @@
 
             this.name = source.name;
             this.scheduleItems = source.scheduleItems.slice();
+            this.live = source.live;
+            this.currentScheduleItemNumber = source.currentScheduleItemNumber;
 
             return this;
         };
@@ -133,6 +135,10 @@
             startSchedule: function() {
                 _schedule.live = true;
                 _schedule.currentScheduleItemNumber = 0;
+            },
+            cancelSchedule: function() {
+                _schedule.live = false;
+                _schedule.currentScheduleItemNumber = -1;
             }
         }
     }

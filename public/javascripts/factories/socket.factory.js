@@ -63,11 +63,12 @@
                     if (!data || data.length == 0) return;
 
                     var timerSettings = JSON.parse(data);
-                    if (!timerSettings.running) return;
+                    var timer = TimerFactory.getTimer('main-timer');
 
-                    if (timerSettings.timeout) {
-                        var timer = TimerFactory.getTimer('main-timer');
-                        timer.timeout = true;
+                    if (!timerSettings.running){
+                        if (timerSettings.timeout){
+                            timer.timeout = true;
+                        }
                         timer.stop();
                     } else {
                         TimerFactory.countDownTo('main-timer', new Date(timerSettings.finish), timerSettings.granularity, timerSettings.overCount);
@@ -80,7 +81,7 @@
                     var newStageMessage = JSON.parse(data);
 
                     var stageMessage = DisplayFactory.getStageMessage();
-                    stageMessage = angular.copy(stageMessage);
+                    stageMessage = angular.copy(newStageMessage);
                 });
             },
             sendChatMessage: function(message) {

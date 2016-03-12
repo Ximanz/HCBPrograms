@@ -4,6 +4,7 @@ var config = require('../config').init();
 module.exports = function (io) {
     var _schedule = "";
     var _timerSettings = "";
+    var _stageMessage = {};
     var _chatLog = [];
 
     io.on('connection', function(socket){
@@ -78,6 +79,15 @@ module.exports = function (io) {
 
         socket.on('get timer', function() {
             io.to(socket.id).emit('update timer', _timerSettings)
+        });
+
+        socket.on('update stage message', function(stageMessage) {
+            _stageMessage = stageMessage;
+            socket.broadcast.emit('update stage message', _stageMessage)
+        });
+
+        socket.on('get stage message', function() {
+            io.to(socket.id).emit('update stage message', _stageMessage)
         });
     });
 };
