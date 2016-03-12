@@ -24,6 +24,7 @@ angular.module('HCBPrograms').config(['$routeProvider', '$locationProvider', '$h
         .icon('hardware:keyboard-24', 'bower_components/material-design-icons/hardware/svg/production/ic_keyboard_24px.svg')
         .icon('action:build-24', 'bower_components/material-design-icons/action/svg/production/ic_build_24px.svg')
         .icon('action:settings-24', 'bower_components/material-design-icons/action/svg/production/ic_settings_24px.svg')
+        .icon('action:alarm-24', 'bower_components/material-design-icons/action/svg/production/ic_alarm_24px.svg')
         .icon('action:power-24', 'bower_components/material-design-icons/action/svg/production/ic_power_settings_new_24px.svg');
 
     NotificationProvider.setOptions({

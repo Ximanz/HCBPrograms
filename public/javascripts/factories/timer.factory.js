@@ -4,7 +4,7 @@
             this.duration = duration;
             this.granularity = granularity || 1000;
             this.tickFtns = [];
-            this.overCount = false;
+            this.overCount = true;
             this.running = false;
             this.timeup = false;
         }
@@ -102,14 +102,14 @@
                 if (endTime == undefined || !(endTime instanceof Date)) return;
 
                 var convertedEndTime = new Date();
-                convertedEndTime.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
+                convertedEndTime.setHours(endTime.getHours(), endTime.getMinutes(), endTime.getSeconds(), endTime.getMilliseconds());
 
                 var duration = (convertedEndTime.getTime() - Date.now()) / 1000;
                 var timer = countdownTimers[timerKey] || (countdownTimers[timerKey] = new CountDownTimer(duration));
                 timer.stop();
 
-                if (granularity) timer.granularity = granularity;
-                if (overCount) timer.overCount = overCount;
+                if (granularity != undefined) timer.granularity = granularity;
+                if (overCount != undefined) timer.overCount = overCount;
                 timer.timeout = false;
                 timer.setDuration(duration).start();
             },
@@ -119,8 +119,8 @@
                 var timer = countdownTimers[timerKey] || (countdownTimers[timerKey] = new CountDownTimer(duration));
                 timer.stop();
 
-                if (granularity) timer.granularity = granularity;
-                if (overCount) timer.overCount = overCount;
+                if (granularity != undefined) timer.granularity = granularity;
+                if (overCount != undefined) timer.overCount = overCount;
                 timer.timeout = false;
                 timer.setDuration(duration).start();
             }

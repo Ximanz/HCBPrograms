@@ -2,7 +2,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
     div.off-canvas.position-left.reveal-for-medium(id="offCanvasLeft" data-off-canvas='')
         div.row.collapse.schedule-panel-menu-bar
             div.small-3.columns.schedule-menu
-                ul.dropdown.menu(data-dropdown-menu='')
+                ul.dropdown.menu(ng-show="controlStatus.status == 'in-control'" data-dropdown-menu='')
                     li
                         button.button(type="button")
                             i.fi-widget.raised
@@ -16,44 +16,53 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                     i.fi-save.raised
                                     span Save
             div.small-9.columns#schedule-action-menu
-                button.button(type="button" ng-click="schedule.live ? cancelSchedule() : startSchedule()" ng-class="{'success': !schedule.live, 'alert': schedule.live}")
+                button.button(type="button" ng-show="controlStatus.status == 'in-control'" ng-click="schedule.live ? cancelSchedule() : startSchedule()" ng-class="{'success': !schedule.live, 'alert': schedule.live}")
                     i(ng-class="{'fi-play': !schedule.live, 'fi-stop': schedule.live}")
                     span Schedule
         div.row
             div.small-12.columns.schedule-name
-                input(type='text' ng-model="schedule.name" ng-model-options="{ updateOn: 'blur' }" placeholder="Schedule Name")
+                md-input-container
+                    label Schedule Name
+                    input(type='text' ng-model="schedule.name" ng-model-options="{ updateOn: 'blur' }" ng-disabled="controlStatus.status != 'in-control'" )
             div.small-12.columns.schedule-finish-time
-                div.input-group
-                    span.input-group-label finish time
-                    input.input-group-field(type='time' ng-model="schedule.finishTime" ng-model-options="{ updateOn: 'blur' }")
+                md-input-container
+                    label Finish Time
+                    md-icon(md-svg-icon="action:alarm-24")
+                    input(type="time" ng-model="schedule.finishTime" ng-model-options="{ updateOn: 'blur' }" ng-disabled="controlStatus.status != 'in-control'")
         div.row
             div.small-12.columns.schedule-item-list-container
                 div.schedule-item-list(ui-sortable="sortableOptions", ng-model="schedule.scheduleItems")
                     div.schedule-item.card(ng-repeat="item in schedule.scheduleItems" ng-class="{'done':$index < schedule.currentScheduleItemNumber, 'live': $index == schedule.currentScheduleItemNumber}")
                         div.schedule-item-header(ng-click="isExpanded = !isExpanded")
-                            div.handle
-                                i.fi-braille
+                            div.handle(ng-show="controlStatus.status == 'in-control'")
+                                    i.fi-braille
                             div.span.schedule-item-name
                                 span {{item.name}}
                             div.schedule-item-finish-time
                                 span {{schedule.getScheduledStartFromFinish($index).format("h:mm a")}}
-                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index);$event.stopPropagation();" ng-hide="$index <= schedule.currentScheduleItemNumber")
+                            a.button.warning.tiny.insert-schedule-item-btn.card(ng-click="addScheduleItem($index);$event.stopPropagation();" ng-hide="$index <= schedule.currentScheduleItemNumber || controlStatus.status != 'in-control'")
                                 i.fi-plus
-                        div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded" data-animate="hinge-in-from-top hinge-out-from-top")
-                            input.duration-input(type="number" ng-model="item.duration" ng-model-options="{ updateOn: 'blur' }")
-                            div.slider-container
-                                rzslider(rz-slider-model="item.duration" rz-slider-options="{floor:1,ceil:120,hideLimitLabels:true}")
-                            a.button.remove-schedule-item-btn(ng-click="schedule.removeItem($index)")
-                                i.fi-x
+                        div.schedule-item-contents(id="contents-{{$index}}" ng-show="isExpanded && controlStatus.status == 'in-control'" data-animate="hinge-in-from-top hinge-out-from-top")
+                            div.row.collapse.expand
+                                div.small-4.columns
+                                    md-input-container.duration-input
+                                        label Duration
+                                        input(type="number" ng-model="item.duration" ng-model-options="{ updateOn: 'blur' }")
+                                div.small-8.columns.slider-container
+                                    rzslider(rz-slider-model="item.duration" rz-slider-options="{floor:1,ceil:120,hideLimitLabels:true}")
+                            div.row.column
+                                button.button.alert.expanded.remove-schedule-item-btn(ng-click="removeScheduleItem($index)")
+                                    i.fi-x
+                                    span Delete
         div.row.column.add-new-schedule-item
-                button.button(type="button" ng-click="addScheduleItem(schedule.scheduleItems.length)") Add Item
+                button.button(type="button" ng-click="addScheduleItem(schedule.scheduleItems.length)" ng-show="controlStatus.status == 'in-control'") Add Item
     div.off-canvas.position-right.reveal-for-large(id="offCanvasRight" data-off-canvas='' data-position="right")
         div.row.collapse
             div.small-12.columns
                 button.button.large.expanded.success.live-view-button(type="button" ng-click="goToLiveView()")
                     i.fi-monitor
                     span Live View
-        div.row.control-options-panel.card
+        div.row.control-options-panel.card(ng-show="controlStatus.status == 'in-control'")
             div.small-12.columns.control-options-panel-menu-bar
                 span Options
             div.small-12.columns
@@ -66,7 +75,12 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
             div.title-bar-right
                 button.menu-icon.hide-for-large(type="button" data-toggle="offCanvasRight")
-        div.row.column.control-status-bar
+        div.row.column.collapse.expanded.control-status-bar
+            button.button.expanded.release-control-button(type="button" ng-show="controlStatus.status == 'in-control'" ng-click="releaseControl()")
+                span Release Control
+            button.button.expanded.take-control-button(type="button" ng-show="controlStatus.status == 'open'" ng-click="requestControl()")
+                span Take Control
+            span.control-user-label(ng-show="controlStatus.status == 'locked'") Controlled by {{controlUser.screenName}}
         div.row.collapse.time-display-container
             div.small-6.columns
                 div.current-time-container.card.text-center
@@ -82,7 +96,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     span.main-timer-label(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}
                     label.next-schedule-item-label {{nextScheduleItem}}
                     span.stage-message-label(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
-        div.row.countdown-control-container
+        div.row.countdown-control-container(ng-show="controlStatus.status == 'in-control'")
             div.small-12.columns.section-header(ng-click="showControl = (showControl == 'countdown') ? '' : 'countdown'")
                 span Control
             div.small-12.columns.section-contents(ng-show="showControl == 'countdown'")
@@ -96,30 +110,23 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                             span {{nextScheduleItem}}
                             i.fi-fast-forward
                 div.row.expanded.countdown-timer-controls
-                    div.small-9.large-8.columns
+                    div.small-12.columns
                         div.row.collapse.expanded
-                            div.small-12.large-6.columns.countdown-for-panel
-                                div.input-group
-                                    div.input-group-button
-                                        button.button(type="button" ng-click="setCountdownFor(newTimerDuration)")
-                                            span Start
-                                    input.input-group-field(type="number" ng-model="newTimerDuration")
-                                    label.input-group-label minutes
-                            div.small-12.large-6.columns.countdown-to-panel
-                                div.input-group
-                                    div.input-group-button
-                                        button.button(type="button" ng-click="setCountdownTo(newTimerFinishTime)")
-                                            span Count to
-                                    input.input-group-field(type="time" ng-model="newTimerFinishTime")
-                    div.small-3.large-4.columns
-                        div.row.collapse.expanded
-                            div.small-12.large-6.columns
-                                button.button.expanded.warning(type="button" ng-click="stopTimer()")
-                                    i.fi-stop
-                            div.small-12.large-6.columns
-                                button.button.expanded.alert(type="button" ng-click="showTimeUpAlert()")
-                                    i.fi-alert
-        div.row.messages-control-container
+                            div.small-9.columns.countdown-for-panel
+                                md-button.md-raised(ng-click="setCountdownFor(newTimerDuration)") Start
+                                md-input-container
+                                    label Countdown for # minutes
+                                    input(type="number" ng-model="newTimerDuration")
+                            div.small-3.columns
+                                md-button.md-raised.md-warn(type="button" ng-click="stopTimer()") Stop
+                            div.small-9.columns.countdown-to-panel
+                                md-button.md-raised(ng-click="setCountdownTo(newTimerFinishTime)") Start
+                                md-input-container
+                                    label Countdown to
+                                    input(type="time" ng-model="newTimerFinishTime")
+                            div.small-3.columns
+                                md-button.md-raised.md-warn(type="button" ng-click="showTimeUpAlert()") Alert
+        div.row.messages-control-container(ng-show="controlStatus.status == 'in-control'")
             div.small-12.columns.section-header(ng-click="showControl = (showControl == 'message') ? '' : 'message'")
                 span Live Messages
             div.small-12.columns.section-contents(ng-show="showControl == 'message'")
@@ -135,7 +142,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 md-switch.md-primary(ng-model="stageMessage.blink")
                                     span Blink
                     div.small-4.columns.message-actions
-                        button.button.expanded(type="button" ng-click="stageMessage.content.$rollbackViewValue(); stageMessage.content = ''") Clear
+                        md-button.md-raised.md-primary(ng-click="stageMessage.content.$rollbackViewValue(); stageMessage.content = ''") Clear
         div.row.chat-container
             div.small-12.columns.section-header(ng-click="showControl = (showControl == 'chat') ? '' : 'chat'")
                 span Chat
@@ -149,8 +156,11 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                             div.message-card.card(ng-class="chatMessage.class")
                                 span.message-content {{chatMessage.message}}
                     div.small-12.columns.chat-input
-                        div.input-group
-                            input.input-group-field(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
-                            div.input-group-button
-                                button.button(type="button" ng-click="sendChatMessage()")
-                                    span Send
+                        md-input-container
+                            input(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
+                        md-button.md-raised.md-primary(ng-click="sendChatMessage()") Send
+                        //div.input-group
+                        //    input.input-group-field(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
+                        //    div.input-group-button
+                        //        button.button(type="button" ng-click="sendChatMessage()")
+                        //            span Send

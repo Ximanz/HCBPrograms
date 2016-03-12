@@ -3,7 +3,7 @@ div.row.new-schedule-item-popup
     div.small-12.small-centered.columns
         div.input-group
             span.input-group-label Name
-            input.input-group-field(type="text" ng-model="scheduleItem.name" focus="opened")
+            input.input-group-field(type="text" ng-model="scheduleItem.name" focus="opened" ng-keydown="$event.keyCode == 13 && add()")
         div.input-group
             span.input-group-label Duration
             input.input-group-field(type="number" ng-model="scheduleItem.duration")

@@ -18,9 +18,6 @@ angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location,
 
     $scope.screenName = SessionFactory.getScreenName();
 
-    if ($scope.screenName == undefined || $scope.screenName == "")
-        $scope.screenName = "Program Manager";
-
     $scope.connect = function(role) {
         console.log("connect");
 

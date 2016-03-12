@@ -1,6 +1,6 @@
 (function (angular) {
     function SocketFactory(SessionFactory, TimerFactory, ScheduleFactory, ChatFactory, DisplayFactory, $q) {
-        var _socket, _isAuthenticated;
+        var _socket, _isAuthenticated, _controlUser, _controlStatus = { status: 'open' };
 
         return {
             getSocket: function() {
@@ -9,6 +9,14 @@
 
             getAuthenticated: function() {
                 return _isAuthenticated;
+            },
+
+            getControlUser: function() {
+                return _controlUser;
+            },
+
+            getControlStatus: function() {
+                return _controlStatus;
             },
 
             initialise: function() {
@@ -57,17 +65,29 @@
                     var schedule = JSON.parse(data);
 
                     ScheduleFactory.getSchedule().merge(schedule);
+
+                    if (schedule.live) {
+                        var index = schedule.currentScheduleItemNumber;
+                        var previousScheduleItem = DisplayFactory.getPreviousScheduleItem();
+                        previousScheduleItem = (index > 0) ? schedule.scheduleItems[index-1].name : "";
+                        var currentScheduleItem = DisplayFactory.getCurrentScheduleItem();
+                        currentScheduleItem = schedule.scheduleItems[index].name;
+                        var nextScheduleItem = DisplayFactory.getNextScheduleItem();
+                        nextScheduleItem = (index < schedule.scheduleItems.length - 1) ? schedule.scheduleItems[index+1].name : "";
+                    }
                 });
 
                 _socket.on('update timer', function(data) {
                     if (!data || data.length == 0) return;
 
+                    console.log('receive update timer', data);
+
                     var timerSettings = JSON.parse(data);
                     var timer = TimerFactory.getTimer('main-timer');
 
                     if (!timerSettings.running){
-                        if (timerSettings.timeout){
-                            timer.timeout = true;
+                        if (timerSettings.timeup){
+                            timer.timeup = true;
                         }
                         timer.stop();
                     } else {
@@ -76,12 +96,25 @@
                 });
 
                 _socket.on('update stage message', function(data) {
-                    if (!data || data.length == 0) return;
+                    if (!data || Object.keys(data).length === 0 || data.length == 0) return;
 
                     var newStageMessage = JSON.parse(data);
 
                     var stageMessage = DisplayFactory.getStageMessage();
                     stageMessage = angular.copy(newStageMessage);
+                });
+
+                _socket.on('update controller', function (controlUser) {
+                    _controlUser = JSON.parse(controlUser);
+
+                    if (_controlUser.screenName == SessionFactory.getUser().screenName) {
+                        _controlStatus.status = 'in-control';
+                    } else if (_controlUser.screenName.length == 0) {
+                        _controlStatus.status = 'open';
+                    } else {
+                        _controlStatus.status = 'locked'
+                    }
+
                 });
             },
             sendChatMessage: function(message) {
@@ -110,13 +143,14 @@
             updateTimer: function() {
                 var timer = TimerFactory.getTimer('main-timer');
                 var data = {
-                    finish: timer.finish,
+                    finish: new Date(timer.finish),
                     running: timer.running,
                     overCount: timer.overCount,
                     granularity: timer.granularity,
-                    timeout: timer.timeout
+                    timeup: timer.timeup
                 };
                 _socket.emit('update timer', angular.toJson(data));
+                console.log('send update timer', data);
             },
             getStageMessage: function() {
                 _socket.emit('get stage message');
@@ -125,6 +159,22 @@
                 var stageMessage = DisplayFactory.getStageMessage();
 
                 _socket.emit('update stage message', angular.toJson(stageMessage));
+            },
+            requestControl: function() {
+                var data = {
+                    user: SessionFactory.getUser(),
+                    accessToken: SessionFactory.getAccessToken()
+                };
+
+                _socket.emit('request control', angular.toJson(data));
+            },
+            releaseControl: function() {
+                var data = {
+                    user: SessionFactory.getUser(),
+                    accessToken: SessionFactory.getAccessToken()
+                };
+
+                _socket.emit('release control', angular.toJson(data));
             }
         }
     }

@@ -111,12 +111,27 @@ a {
 }
 
 .schedule-name input {
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  margin-top: 10px;
-  margin-bottom: 0;
   font-size: 1.5em;
+}
+
+md-input-container {
+  margin-bottom: 0;
+}
+
+md-input-container .md-errors-spacer {
+  min-height: 0;
+}
+
+md-input-container input {
+  box-shadow: none;
+}
+
+button span {
+  margin-left: 5px;
+}
+
+.schedule-finish-time input {
+  font-size: 1.3rem;
 }
 
 .new-schedule-item-popup .input-group-label {
@@ -239,6 +254,21 @@ a {
 
 }
 
+.control-status-bar {
+  padding: 0;
+  position: relative;
+  height: 2.5rem;
+}
+
+.control-status-bar button {
+  margin: 0;
+  position: absolute;
+}
+
+.control-status-bar .take-control-button {
+  background-color: #3adb76;
+}
+
 .time-display-container {
   background-color: #eee;
   padding: 5px;
@@ -257,7 +287,7 @@ a {
 
 .countdown-container .current-schedule-item-label {
   font-size: 2rem;
-  margin-bottom: -1.5rem;
+  margin-bottom: -0.8rem;
 }
 
 .countdown-container .next-schedule-item-label {
@@ -297,20 +327,22 @@ a {
   margin: 0 5px;
 }
 
-.countdown-timer-controls span {
-  white-space: nowrap;
+.countdown-timer-controls input {
+  font-size: 1.2rem;
 }
 
 .countdown-timer-controls button {
-  width: 6rem;
+  margin-top: 18px;
 }
 
-.countdown-timer-controls button, .countdown-timer-controls input {
-  height: 2.7rem;
+.countdown-for-panel button.md-button.md-raised, .countdown-to-panel button.md-button.md-raised,
+.countdown-for-panel button.md-button.md-raised:hover, .countdown-to-panel button.md-button.md-raised:hover {
+  color: white;
+  background-color: #3adb76;
 }
-
 
 .messages-control-container .message-window textarea {
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
@@ -321,9 +353,10 @@ a {
 }
 
 .messages-control-container .message-actions button {
-  margin-bottom: 0;
+  margin: 0;
   height: 2.7rem;
   padding: 0;
+  float: right;
 }
 
 .chat-container {
@@ -386,6 +419,15 @@ a {
     border-top: rgba(20, 50, 200, 0.6) 2px solid;
   }
 
+  .chat-input md-input-container {
+    width: 75%;
+  }
+
+  .chat-input .md-button {
+    float: right;
+    margin-top: 18px;
+  }
+
 .output-window {
   background-image: url('../images/background_tile_dark.png');
 }
@@ -416,7 +458,11 @@ a {
 }
 
 .countdown-output-container {
+  margin-top: 4rem;
+}
 
+.countdown-output-container span {
+  font-size: 12rem;
 }
   
 @keyframes text-bulge {

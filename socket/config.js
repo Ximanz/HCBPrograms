@@ -6,6 +6,7 @@ module.exports = function (io) {
     var _timerSettings = "";
     var _stageMessage = {};
     var _chatLog = [];
+    var _controller = {};
 
     io.on('connection', function(socket){
         //temp delete socket from namespace connected map
@@ -44,6 +45,8 @@ module.exports = function (io) {
 
                 // Disconnect listener
                 socket.on('disconnect', function () {
+                    if (_controller.socket == socket.id) _controller = {};
+                    io.emit('update controller', "{screenName:''}");
                     console.info('SOCKET [%s] DISCONNECTED', socket.id);
                 });
 
@@ -88,6 +91,27 @@ module.exports = function (io) {
 
         socket.on('get stage message', function() {
             io.to(socket.id).emit('update stage message', _stageMessage)
+        });
+
+        socket.on('request control', function(request) {
+            data = JSON.parse(request);
+
+            if (_controller && _controller.user) {
+                io.to(socket.id).emit('update controller', JSON.stringify(_controller.user));
+            } else {
+                _controller = data;
+                _controller.socket = socket.id;
+                io.emit('update controller', JSON.stringify(data.user))
+            }
+        });
+
+        socket.on('release control', function(request) {
+            data = JSON.parse(request);
+
+            if (_controller && _controller.accessToken && data && data.accessToken && _controller.accessToken == data.accessToken) {
+                _controller = {};
+                io.emit('update controller', JSON.stringify({'screenName': ''}))
+            }
         });
     });
 };

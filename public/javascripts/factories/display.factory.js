@@ -6,9 +6,22 @@
             blink: false
         };
 
+        var _previousScheduleItem = "";
+        var _currentScheduleItem = "";
+        var _nextScheduleItem = "";
+
         return {
             getStageMessage: function() {
                 return _stageMessage;
+            },
+            getPreviousScheduleItem: function() {
+                return _previousScheduleItem;
+            },
+            getCurrentScheduleItem: function() {
+                return _currentScheduleItem;
+            },
+            getNextScheduleItem: function() {
+                return _nextScheduleItem;
             }
         }
     }

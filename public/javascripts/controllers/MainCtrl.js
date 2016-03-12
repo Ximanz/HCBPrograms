@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location, SocketFactory, SessionFactory, NotificationFactory) {
+angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location, $timeout, SocketFactory, SessionFactory, NotificationFactory) {
     $scope.socketConnected = false;
 
     $scope.$on('connection-approved', function() {
@@ -13,7 +13,6 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location,
                     SocketFactory.getTimer();
                     SocketFactory.getStageMessage();
                     SocketFactory.getChatLog();
-                    $scope.$emit('socket-established');
                 },
                 function(){
                     console.log("Main controller socket failed");

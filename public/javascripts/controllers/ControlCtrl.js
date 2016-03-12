@@ -1,11 +1,16 @@
 angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, DisplayFactory, ChatFactory, SocketFactory, NotificationFactory) {
     $scope.pageClass = 'control-screen';
 
-    $scope.$on('socket-established', function() {
+    $timeout(function() {
+        $scope.controlUser = SocketFactory.getControlUser();
+        $scope.controlStatus = SocketFactory.getControlStatus();
         $scope.schedule = ScheduleFactory.getSchedule();
         $scope.mainTimer = TimerFactory.getTimer('main-timer');
         $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
         $scope.stageMessage = DisplayFactory.getStageMessage();
+        $scope.previousScheduleItem = DisplayFactory.getPreviousScheduleItem();
+        $scope.currentScheduleItem = DisplayFactory.getCurrentScheduleItem();
+        $scope.nextScheduleItem = DisplayFactory.getNextScheduleItem();
         $scope.chatLog = ChatFactory.getChatLog();
 
         $scope.mainTimer.onTick(function(hour, min, sec, negative) {
@@ -27,6 +32,8 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
             if ($scope.schedule.live) {
                 $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
                 $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
+
+
             } else {
                 $scope.serviceEndTimeLabel = "";
                 $scope.serviceEndTime = "Schedule Not Started";
@@ -35,22 +42,25 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         }).start();
 
         $scope.$watch('schedule.name', function() {
-            SocketFactory.updateSchedule();
+            if ($scope.controlStatus.status == 'in-control') SocketFactory.updateSchedule();
         });
 
         $scope.$watch('schedule.finishTime', function() {
-            SocketFactory.updateSchedule();
+            if ($scope.controlStatus.status == 'in-control') SocketFactory.updateSchedule();
         });
 
         $scope.$watch('stageMessage', function() {
-            SocketFactory.updateStageMessage();
+            if ($scope.controlStatus.status == 'in-control') SocketFactory.updateStageMessage();
+        });
+
+        $scope.$watch('mainTimer.overCount', function() {
+            if ($scope.controlStatus.status == 'in-control') SocketFactory.updateTimer();
         });
 
         if ($scope.schedule.live) {
-            $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber);
+            $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber, true);
         }
-    });
-
+    }, 2000, true);
 
     $scope.scheduleList = [];
     $scope.currentTime = "";
@@ -67,6 +77,14 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
 
     $scope.goToLiveView = function() {
         $location.path("/view");
+    };
+
+    $scope.requestControl = function() {
+        SocketFactory.requestControl();
+    };
+
+    $scope.releaseControl = function() {
+        SocketFactory.releaseControl();
     };
 
     $scope.loadSchedules = function() {
@@ -110,7 +128,16 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         })
     };
 
+    $scope.removeScheduleItem = function(index) {
+        $scope.schedule.removeItem(index);
+        SocketFactory.updateSchedule();
+    };
+
     $scope.startSchedule = function() {
+        if ($scope.schedule.scheduleItems.length == 0) {
+            NotificationFactory.displayOne({type: 'error', content: 'There are no items to run in this schedule'});
+            return;
+        }
         ScheduleFactory.startSchedule();
         $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber);
         SocketFactory.updateSchedule();
@@ -141,10 +168,19 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         }
     };
 
-    $scope.startScheduleItem = function(index) {
+    $scope.startScheduleItem = function(index, ignoreTimer) {
         $scope.previousScheduleItem = (index > 0) ? $scope.schedule.scheduleItems[index-1].name : "";
         $scope.currentScheduleItem = $scope.schedule.scheduleItems[index].name;
         $scope.nextScheduleItem = (index < $scope.schedule.scheduleItems.length - 1) ? $scope.schedule.scheduleItems[index+1].name : "";
+
+        if (ignoreTimer) return;
+
+        var scheduledStartTime = $scope.schedule.getScheduledStartFromFinish(index);
+        if (scheduledStartTime.isBefore()) {
+            $scope.setCountdownTo(scheduledStartTime.add($scope.schedule.scheduleItems[index].duration, 'minutes').toDate());
+        } else {
+            $scope.setCountdownFor($scope.schedule.scheduleItems[index].duration);
+        }
     };
 
     $scope.sendChatMessage = function() {

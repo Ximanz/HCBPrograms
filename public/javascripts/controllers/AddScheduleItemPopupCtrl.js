@@ -7,6 +7,8 @@ angular.module('HCBPrograms').controller("AddScheduleItemPopupCtrl", function($s
     $scope.opened = true;
 
     $scope.add = function() {
+        if (name == '' || duration <= 0) return;
+
         $modalInstance.close($scope.scheduleItem);
     };
 
