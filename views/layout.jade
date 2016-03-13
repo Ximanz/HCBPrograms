@@ -17,7 +17,7 @@ html(ng-app="HCBPrograms")
     link(rel='stylesheet', href='/stylesheets/app.css')
 
   body(ng-controller="MainCtrl")
-    div.off-canvas-wrapper.full-height.scroll-y(class="{{pageClass}}" ng-view)
+    div.off-canvas-wrapper.full-height(class="{{pageClass}}" ng-view)
 
     script(src="/bower_components/jquery/dist/jquery.min.js")
     script(src="/bower_components/jquery-ui/ui/minified/core.min.js")

@@ -1,5 +1,5 @@
 div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
-    div.off-canvas-content.output-window(data-off-canvas-content='')
+    div.off-canvas-content.output-window.scroll-y(data-off-canvas-content='')
         md-fab-toolbar(md-direction="left")
             md-fab-trigger
                 md-button.md-fab.md-primary(aria-label="menu")
@@ -12,7 +12,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                         md-icon(md-svg-icon="action:power-24")
                     md-button.md-icon-button(ng-click="goToControlView()")
                         md-icon(md-svg-icon="hardware:keyboard-24")
-        div.row.expanded.collapse.output-viewport
+        div.row.expanded.collapse.output-viewport.scroll-y
             div.small-12.medium-4.columns
                 div.current-time-output.text-center
                     label It's now
@@ -21,7 +21,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 div.finish-time-output.text-center
                     label {{serviceEndTimeLabel}}
                     span {{serviceEndTime}}
-            div.small-12.columns
+            div.small-12.columns.countdown-output-container-column
                 div.countdown-output-container.text-center
                     label.current-schedule-item-output {{currentScheduleItem}}
                     span.main-timer-output(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}

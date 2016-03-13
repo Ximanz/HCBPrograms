@@ -11,6 +11,7 @@ html, body {
 
 .full-height {
   height: 100%;
+  overflow-y: hidden;
 }
 
 .scroll-y {
@@ -457,6 +458,10 @@ button span {
   margin: 0.5rem 0;
 }
 
+.countdown-output-container-column {
+  min-height: 40%;
+}
+
 .countdown-output-container {
   margin-top: 1rem;
 }
@@ -470,17 +475,17 @@ button span {
 
 .output-viewport label.current-schedule-item-output {
   font-size: 7vw;
-  ilne-height: 8vw;
+  line-height: 8vw;
   color: #a5f0b0;
 }
 
 .output-viewport label.next-schedule-item-output {
-   font-size: 5vw;
-   ilne-height: 8vw;
+   font-size: 4vw;
+  line-height: 8vw;
  }
 
 .output-viewport span.stage-message-output {
-  font-size: 5vw;
+  font-size: 6vw;
 }
   
 @keyframes text-bulge {
