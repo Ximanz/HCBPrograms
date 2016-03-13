@@ -26,6 +26,6 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     label.current-schedule-item-output {{currentScheduleItem}}
                     span.main-timer-output(ng-class="{'over-time': overTime, 'blink': overTime}") {{mainTimerOutput}}
                     label.next-schedule-item-output {{nextScheduleItem}}
-            div.small-12.columns
-                    span.stage-message-label(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
+            div.small-12.columns.text-center
+                    span.stage-message-output(ng-class="{'red': stageMessage.red, 'blink': stageMessage.blink}") {{stageMessage.content}}
 

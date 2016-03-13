@@ -8,9 +8,8 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
         $scope.mainTimer = TimerFactory.getTimer('main-timer');
         $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
         $scope.stageMessage = DisplayFactory.getStageMessage();
-        $scope.previousScheduleItem = DisplayFactory.getPreviousScheduleItem();
-        $scope.currentScheduleItem = DisplayFactory.getCurrentScheduleItem();
-        $scope.nextScheduleItem = DisplayFactory.getNextScheduleItem();
+
+        $scope.updateScheduleItems
 
         $scope.mainTimer.onTick(function(hour, min, sec, negative) {
             if ($scope.mainTimer.timeup) {
@@ -40,6 +39,8 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
 
         }).start();
 
+        $scope.$watch('schedule.currentScheduleItemNumber', $scope.updateScheduleItems);
+
     }, 2000, true);
 
     $scope.currentTime = "";
@@ -48,6 +49,15 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
 
 
     SaveState();
+
+    $scope.updateScheduleItems = function() {
+        if ($scope.schedule.live) {
+            var index = $scope.schedule.currentScheduleItemNumber;
+            $scope.previousScheduleItem = (index > 0) ? $scope.schedule.scheduleItems[index-1].name : "";
+            $scope.currentScheduleItem = $scope.schedule.scheduleItems[index].name;
+            $scope.nextScheduleItem = (index < $scope.schedule.scheduleItems.length - 1) ? 'NEXT: ' + $scope.schedule.scheduleItems[index+1].name : "";
+        }
+    };
 
     $scope.goToControlView = function() {
         $location.path("/control");

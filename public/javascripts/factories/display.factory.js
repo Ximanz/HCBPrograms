@@ -1,27 +1,16 @@
 (function (angular) {
     function DisplayFactory() {
-        var _stageMessage = {
-            content: "",
-            red: false,
-            blink: false
-        };
-
-        var _previousScheduleItem = "";
-        var _currentScheduleItem = "";
-        var _nextScheduleItem = "";
+        var _stageMessage;
 
         return {
             getStageMessage: function() {
+                _stageMessage = _stageMessage || {
+                        content: '',
+                        red: false,
+                        blink: false
+                    };
+
                 return _stageMessage;
-            },
-            getPreviousScheduleItem: function() {
-                return _previousScheduleItem;
-            },
-            getCurrentScheduleItem: function() {
-                return _currentScheduleItem;
-            },
-            getNextScheduleItem: function() {
-                return _nextScheduleItem;
             }
         }
     }

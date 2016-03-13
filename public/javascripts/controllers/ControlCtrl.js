@@ -8,9 +8,6 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         $scope.mainTimer = TimerFactory.getTimer('main-timer');
         $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
         $scope.stageMessage = DisplayFactory.getStageMessage();
-        $scope.previousScheduleItem = DisplayFactory.getPreviousScheduleItem();
-        $scope.currentScheduleItem = DisplayFactory.getCurrentScheduleItem();
-        $scope.nextScheduleItem = DisplayFactory.getNextScheduleItem();
         $scope.chatLog = ChatFactory.getChatLog();
 
         $scope.mainTimer.onTick(function(hour, min, sec, negative) {
@@ -32,8 +29,6 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
             if ($scope.schedule.live) {
                 $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
                 $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
-
-
             } else {
                 $scope.serviceEndTimeLabel = "";
                 $scope.serviceEndTime = "Schedule Not Started";
@@ -51,7 +46,7 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
 
         $scope.$watch('stageMessage', function() {
             if ($scope.controlStatus.status == 'in-control') SocketFactory.updateStageMessage();
-        });
+        }, true);
 
         $scope.$watch('mainTimer.overCount', function() {
             if ($scope.controlStatus.status == 'in-control') SocketFactory.updateTimer();

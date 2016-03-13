@@ -450,7 +450,7 @@ button span {
 }
 
 .output-viewport span {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
 }
 
 .current-time-output, .finish-time-output {
@@ -458,11 +458,29 @@ button span {
 }
 
 .countdown-output-container {
-  margin-top: 4rem;
+  margin-top: 1rem;
 }
 
 .countdown-output-container span {
-  font-size: 12rem;
+  font-size: 8rem;
+  font-size: 20vw;
+  font-family: 'Alegreya+SC', 'Roboto', sans-serif;
+  line-height: 16vw;
+}
+
+.output-viewport label.current-schedule-item-output {
+  font-size: 7vw;
+  ilne-height: 8vw;
+  color: #a5f0b0;
+}
+
+.output-viewport label.next-schedule-item-output {
+   font-size: 5vw;
+   ilne-height: 8vw;
+ }
+
+.output-viewport span.stage-message-output {
+  font-size: 5vw;
 }
   
 @keyframes text-bulge {

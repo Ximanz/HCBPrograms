@@ -65,16 +65,6 @@
                     var schedule = JSON.parse(data);
 
                     ScheduleFactory.getSchedule().merge(schedule);
-
-                    if (schedule.live) {
-                        var index = schedule.currentScheduleItemNumber;
-                        var previousScheduleItem = DisplayFactory.getPreviousScheduleItem();
-                        previousScheduleItem = (index > 0) ? schedule.scheduleItems[index-1].name : "";
-                        var currentScheduleItem = DisplayFactory.getCurrentScheduleItem();
-                        currentScheduleItem = schedule.scheduleItems[index].name;
-                        var nextScheduleItem = DisplayFactory.getNextScheduleItem();
-                        nextScheduleItem = (index < schedule.scheduleItems.length - 1) ? schedule.scheduleItems[index+1].name : "";
-                    }
                 });
 
                 _socket.on('update timer', function(data) {
@@ -100,8 +90,11 @@
 
                     var newStageMessage = JSON.parse(data);
 
-                    var stageMessage = DisplayFactory.getStageMessage();
-                    stageMessage = angular.copy(newStageMessage);
+                    var stageMessage = DisplayFactory.getStageMessage()
+
+                    stageMessage.content = newStageMessage.content;
+                    stageMessage.blink = newStageMessage.blink;
+                    stageMessage.red = newStageMessage.red;
                 });
 
                 _socket.on('update controller', function (controlUser) {

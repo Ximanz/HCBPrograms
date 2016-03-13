@@ -110,7 +110,7 @@
 
                 if (granularity != undefined) timer.granularity = granularity;
                 if (overCount != undefined) timer.overCount = overCount;
-                timer.timeout = false;
+                timer.timeup = false;
                 timer.setDuration(duration).start();
             },
             countDownFor: function(timerKey, duration, granularity, overCount) {
@@ -121,7 +121,7 @@
 
                 if (granularity != undefined) timer.granularity = granularity;
                 if (overCount != undefined) timer.overCount = overCount;
-                timer.timeout = false;
+                timer.timeup = false;
                 timer.setDuration(duration).start();
             }
         }
