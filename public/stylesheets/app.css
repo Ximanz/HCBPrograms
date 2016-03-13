@@ -420,12 +420,13 @@ button span {
   }
 
   .chat-input md-input-container {
-    width: 75%;
+    width: 100%
   }
 
   .chat-input .md-button {
     float: right;
     margin-top: 18px;
+    width: 100%
   }
 
 .output-window {

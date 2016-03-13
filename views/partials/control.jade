@@ -155,12 +155,8 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                                 span.timestamp {{chatMessage.timestamp.fromNow()}}
                             div.message-card.card(ng-class="chatMessage.class")
                                 span.message-content {{chatMessage.message}}
-                    div.small-12.columns.chat-input
+                    div.small-10.columns.chat-input
                         md-input-container
                             input(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
+                    div.small-2.columns.chat-input
                         md-button.md-raised.md-primary(ng-click="sendChatMessage()") Send
-                        //div.input-group
-                        //    input.input-group-field(type="text" ng-keydown="$event.keyCode == 13 && sendChatMessage()" ng-model="chatLine" ng-blur="chatFocus = false" focus="chatFocus")
-                        //    div.input-group-button
-                        //        button.button(type="button" ng-click="sendChatMessage()")
-                        //            span Send
