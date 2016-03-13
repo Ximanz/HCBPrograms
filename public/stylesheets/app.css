@@ -11,7 +11,6 @@ html, body {
 
 .full-height {
   height: 100%;
-  overflow-y: hidden;
 }
 
 .scroll-y {
