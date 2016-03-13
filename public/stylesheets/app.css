@@ -332,7 +332,9 @@ button span {
 }
 
 .countdown-timer-controls button {
-  margin-top: 18px;
+  min-width: 60px;
+  width: 100%;
+  margin: 18px 0 0 0;
 }
 
 .countdown-for-panel button.md-button.md-raised, .countdown-to-panel button.md-button.md-raised,

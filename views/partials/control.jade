@@ -70,7 +70,7 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                     span Keep counting after 0
     div.off-canvas-content(data-off-canvas-content='')
         div.title-bar.expanded.text-center
-            span.title-bar-title Hope Church Brisbane Service Programs
+            span.title-bar-title Hope Church Brisbane Programs
             div.title-bar-left
                 button.menu-icon.hide-for-medium(type="button" data-toggle="offCanvasLeft")
             div.title-bar-right
@@ -112,15 +112,18 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 div.row.expanded.countdown-timer-controls
                     div.small-12.columns
                         div.row.collapse.expanded
-                            div.small-9.columns.countdown-for-panel
-                                md-button.md-raised(ng-click="setCountdownFor(newTimerDuration)") Start
+                            div.small-2.columns.countdown-for-panel
+                                md-button.md-raised(ng-click="setCountdownFor(newTimerDuration)") Go
+                            div.small-7.columns.countdown-for-panel
                                 md-input-container
-                                    label Countdown for # minutes
+                                    label Countdown for #
                                     input(type="number" ng-model="newTimerDuration")
                             div.small-3.columns
                                 md-button.md-raised.md-warn(type="button" ng-click="stopTimer()") Stop
-                            div.small-9.columns.countdown-to-panel
-                                md-button.md-raised(ng-click="setCountdownTo(newTimerFinishTime)") Start
+                        div.row.collapse.expanded
+                            div.small-2.columns.countdown-to-panel
+                                md-button.md-raised(ng-click="setCountdownTo(newTimerFinishTime)") Go
+                            div.small-7.columns.countdown-to-panel
                                 md-input-container
                                     label Countdown to
                                     input(type="time" ng-model="newTimerFinishTime")
