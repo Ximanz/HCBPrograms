@@ -2,6 +2,13 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
     $scope.pageClass = 'control-screen';
 
     $timeout(function() {
+        if (!SocketFactory.getAuthenticated()) {
+            NotificationFactory.displayOne({type: 'error', content: 'Please log in'});
+            SessionFactory.destroy();
+            $location.path("/");
+            return;
+        }
+
         $scope.controlUser = SocketFactory.getControlUser();
         $scope.controlStatus = SocketFactory.getControlStatus();
         $scope.schedule = ScheduleFactory.getSchedule();
@@ -55,13 +62,12 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         if ($scope.schedule.live) {
             $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber, true);
         }
-    }, 2000, true);
+    }, 500, true);
 
     $scope.scheduleList = [];
     $scope.currentTime = "";
     $scope.serviceEndTime = "";
     $scope.mainTimerOutput = "00:00";
-
 
     SaveState();
 
@@ -206,6 +212,11 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         SocketFactory.updateTimer();
     };
 
+    $scope.logout = function() {
+        SessionFactory.destroy();
+        SocketFactory.disconnect();
+        $location.path("/");
+    };
 
     function SaveState() {
         var resumeState = SessionFactory.getResumeState() || {};

@@ -168,6 +168,10 @@
                 };
 
                 _socket.emit('release control', angular.toJson(data));
+            },
+            disconnect: function() {
+                _socket.disconnect();
+                _isAuthenticated = false;
             }
         }
     }

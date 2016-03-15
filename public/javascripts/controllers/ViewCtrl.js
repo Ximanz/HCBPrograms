@@ -1,7 +1,14 @@
-angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, SocketFactory, DisplayFactory) {
+angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, SocketFactory, NotificationFactory, DisplayFactory) {
     $scope.pageClass = 'view-screen';
 
     $timeout(function() {
+        if (!SocketFactory.getAuthenticated()) {
+            NotificationFactory.displayOne({type: 'error', content: 'Please log in'});
+            SessionFactory.destroy();
+            $location.path("/");
+            return;
+        }
+
         $scope.controlUser = SocketFactory.getControlUser();
         $scope.controlStatus = SocketFactory.getControlStatus();
         $scope.schedule = ScheduleFactory.getSchedule();
@@ -9,7 +16,7 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
         $scope.systemTimer = TimerFactory.getTimer('system-timer', 0, 1000);
         $scope.stageMessage = DisplayFactory.getStageMessage();
 
-        $scope.updateScheduleItems
+        $scope.updateScheduleItems();
 
         $scope.mainTimer.onTick(function(hour, min, sec, negative) {
             if ($scope.mainTimer.timeup) {
@@ -41,7 +48,7 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
 
         $scope.$watch('schedule.currentScheduleItemNumber', $scope.updateScheduleItems);
 
-    }, 2000, true);
+    }, 500, true);
 
     $scope.currentTime = "";
     $scope.serviceEndTime = "";
@@ -65,7 +72,7 @@ angular.module('HCBPrograms').controller("ViewCtrl", function($scope, $location,
 
     $scope.logout = function() {
         SessionFactory.destroy();
-        SocketFactory.getSocket().disconnect();
+        SocketFactory.disconnect();
         $location.path("/");
     };
 

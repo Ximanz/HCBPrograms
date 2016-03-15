@@ -4,7 +4,7 @@ var schedules = {
     readAll: function(req, res) {
         Schedule
             .aggregate(
-                { $project: { _id: 0, name: 1 } })
+                { $project: { _id: 0, name: 1, finishTime: 1, scheduleItemCount: { $size: '$scheduleItems' } } })
             .exec(function (err, schedules) {
                 if (err) {
                     console.log(err);

@@ -68,6 +68,11 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
             div.small-12.columns
                 md-switch(ng-model="mainTimer.overCount")
                     span Keep counting after 0
+        div.row.collapse.bottom
+            div.small-12.columns
+                button.button.large.expanded.warning.logout-button(type="button" ng-click="logout()")
+                    i.fi-power
+                    span Log Out
     div.off-canvas-content(data-off-canvas-content='')
         div.title-bar.expanded.text-center
             span.title-bar-title Hope Church Brisbane Programs
