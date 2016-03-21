@@ -85,7 +85,8 @@ div.off-canvas-wrapper-inner.full-height(data-off-canvas-wrapper='')
                 span Release Control
             button.button.expanded.take-control-button(type="button" ng-show="controlStatus.status == 'open'" ng-click="requestControl()")
                 span Take Control
-            span.control-user-label(ng-show="controlStatus.status == 'locked'") Controlled by {{controlUser.screenName}}
+            div.control-user-label.text-center
+                span(ng-show="controlStatus.status == 'locked'") Controlled by {{controlUser.screenName}}
         div.row.collapse.time-display-container
             div.small-6.columns
                 div.current-time-container.card.text-center

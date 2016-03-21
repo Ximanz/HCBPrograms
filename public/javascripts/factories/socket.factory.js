@@ -99,7 +99,7 @@
                 });
 
                 _socket.on('update controller', function (controlUser) {
-                    _controlUser = JSON.parse(controlUser);
+                    _controlUser = angular.copy(JSON.parse(controlUser));
 
                     if (_controlUser.screenName == SessionFactory.getUser().screenName) {
                         _controlStatus.status = 'in-control';
