@@ -368,8 +368,9 @@ button span {
 }
 
 .countdown-for-panel input, .countdown-to-panel input {
-  min-width: 3rem;
+  min-width: 4rem;
   margin-left: 5px;
+  margin-right: -5px;
 }
 
 .messages-control-container .message-window textarea {

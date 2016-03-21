@@ -45,8 +45,10 @@ module.exports = function (io) {
 
                 // Disconnect listener
                 socket.on('disconnect', function () {
-                    if (_controller.socket == socket.id) _controller = {};
-                    io.emit('update controller', "{screenName:''}");
+                    if (_controller.socket == socket.id){
+                        _controller = {};
+                        io.emit('update controller', "{'screenName':''}");
+                    }
                     console.info('SOCKET [%s] DISCONNECTED', socket.id);
                 });
 
