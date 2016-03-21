@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location, AuthFactory, SessionFactory) {
+angular.module('HCBPrograms').controller("HomeCtrl", function($scope, $location, AuthFactory, SessionFactory, SocketFactory) {
     $scope.pageClass = 'login-screen';
     var resumeState = SessionFactory.getResumeState();
     if (resumeState != undefined) {

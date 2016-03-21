@@ -1,4 +1,4 @@
-angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location, $timeout, SocketFactory, SessionFactory, NotificationFactory) {
+angular.module('HCBPrograms').controller("MainCtrl", function($rootScope, $scope, $location, $timeout, SocketFactory, SessionFactory, NotificationFactory) {
     $scope.socketConnected = false;
 
     $scope.$on('connection-approved', function() {
@@ -7,6 +7,7 @@ angular.module('HCBPrograms').controller("MainCtrl", function($scope, $location,
             .then(
                 function() {
                     console.log("Main controller socket connected");
+                    $rootScope.$broadcast('hcb-socket-connected');
                     $scope.socketConnected = true;
                     SocketFactory.configure();
                     SocketFactory.getSchedule();

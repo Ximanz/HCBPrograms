@@ -1,7 +1,19 @@
 angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, $modal, $location, $timeout, SessionFactory, ScheduleFactory, TimerFactory, DisplayFactory, ChatFactory, SocketFactory, NotificationFactory) {
     $scope.pageClass = 'control-screen';
 
-    $timeout(function() {
+    $scope.scheduleList = [];
+    $scope.currentTime = "";
+    $scope.serviceEndTime = "";
+    $scope.mainTimerOutput = "00:00";
+
+    SaveState();
+
+    $scope.sortableOptions = {
+        handle: '.handle',
+        axis: 'y'
+    };
+
+    $scope.initialise = function() {
         if (!SocketFactory.getAuthenticated()) {
             NotificationFactory.displayOne({type: 'error', content: 'Please log in'});
             SessionFactory.destroy();
@@ -62,18 +74,6 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         if ($scope.schedule.live) {
             $scope.startScheduleItem($scope.schedule.currentScheduleItemNumber, true);
         }
-    }, 500, true);
-
-    $scope.scheduleList = [];
-    $scope.currentTime = "";
-    $scope.serviceEndTime = "";
-    $scope.mainTimerOutput = "00:00";
-
-    SaveState();
-
-    $scope.sortableOptions = {
-        handle: '.handle',
-        axis: 'y'
     };
 
     $scope.goToLiveView = function() {
@@ -217,6 +217,14 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
         SocketFactory.disconnect();
         $location.path("/");
     };
+
+    if (SocketFactory.getAuthenticated()) {
+        $scope.initialise();
+    }
+
+    $scope.$on('hcb-socket-connected', function() {
+        $scope.initialise();
+    });
 
     function SaveState() {
         var resumeState = SessionFactory.getResumeState() || {};

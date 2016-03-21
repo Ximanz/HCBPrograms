@@ -35,6 +35,7 @@
 
                 _socket.on('disconnect', function (data) {
                     socketDeferred.reject(false);
+                    _isAuthenticated = false;
                     console.log('socket is rejected');
                 });
 

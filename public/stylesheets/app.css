@@ -237,11 +237,12 @@ button span {
 }
 
   .schedule-list-item {
-    padding: 0;
-    margin: 0 5px;
+    padding: 1rem;
+    margin: 5px;
   }
 
   .schedule-list-item-actions button{
+    margin-top: 1rem;
     float: right;
   }
 
@@ -490,24 +491,24 @@ button span {
 
 .countdown-output-container span {
   font-size: 8rem;
-  font-size: 20vw;
+  font-size: 20vmax;
   font-family: 'Alegreya+SC', 'Roboto', sans-serif;
-  line-height: 16vw;
+  line-height: 16vmax;
 }
 
 .output-viewport label.current-schedule-item-output {
-  font-size: 7vw;
-  line-height: 8vw;
+  font-size: 7vmax;
+  line-height: 8vmax;
   color: #a5f0b0;
 }
 
 .output-viewport label.next-schedule-item-output {
-   font-size: 4vw;
-  line-height: 8vw;
+   font-size: 4vmax;
+  line-height: 8vmax;
  }
 
 .output-viewport span.stage-message-output {
-  font-size: 6vw;
+  font-size: 6vmax;
 }
   
 @keyframes text-bulge {
