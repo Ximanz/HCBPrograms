@@ -170,6 +170,9 @@
 
                 _socket.emit('release control', angular.toJson(data));
             },
+            sendHeartbeat: function() {
+                _socket.emit('heartbeat');
+            },
             disconnect: function() {
                 _socket.disconnect();
                 _isAuthenticated = false;

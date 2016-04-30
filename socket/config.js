@@ -59,6 +59,10 @@ module.exports = function (io) {
 
         socket.on('authenticate', authenticate );
 
+        socket.on('heartbeat', function() {
+            io.to(socket.id).emit('heartbeat response');
+        });
+
         socket.on('chat message', function(chatMessage) {
             _chatLog.push(chatMessage);
             io.emit('chat message', chatMessage);

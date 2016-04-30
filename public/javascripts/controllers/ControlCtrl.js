@@ -43,17 +43,22 @@ angular.module('HCBPrograms').controller("ControlCtrl", function($scope, $http, 
             }
         });
 
-        $scope.systemTimer.setOverCount(true).onTick(function() {
-            $scope.currentTime = moment().format('h:mm:ss a');
-            if ($scope.schedule.live) {
-                $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
-                $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
-            } else {
-                $scope.serviceEndTimeLabel = "";
-                $scope.serviceEndTime = "Schedule Not Started";
-            }
-
-        }).start();
+        $scope.systemTimer
+            .setOverCount(true)
+            .onTick(function() {
+                $scope.currentTime = moment().format('h:mm:ss a');
+                if ($scope.schedule.live) {
+                    $scope.serviceEndTimeLabel = $scope.schedule.finishTime < Date.now() ? "Schedule has ended" : "Schedule will end";
+                    $scope.serviceEndTime = moment($scope.schedule.finishTime).fromNow();
+                } else {
+                    $scope.serviceEndTimeLabel = "";
+                    $scope.serviceEndTime = "Schedule Not Started";
+                }
+            })
+            .onTick(function(){
+                SocketFactory.sendHeartbeat();
+            })
+            .start();
 
         $scope.$watch('schedule.name', function() {
             if ($scope.controlStatus.status == 'in-control') SocketFactory.updateSchedule();
