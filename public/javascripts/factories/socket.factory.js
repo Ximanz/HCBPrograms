@@ -55,6 +55,8 @@
                 _socket.on('update chat log', function(chatLog) {
                     if (!chatLog || chatLog.length == 0) return;
 
+                    ChatFactory.clearChatLog();
+
                     chatLog.forEach(function(chatMessage) {
                         ChatFactory.newChatMessage(JSON.parse(chatMessage));
                     });
