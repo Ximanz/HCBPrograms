@@ -356,7 +356,7 @@ button span {
 }
 
 .countdown-timer-controls button {
-  min-width: 60px;
+  min-width: 30px;
   width: 100%;
   margin: 18px 0 0 0;
 }
@@ -367,10 +367,17 @@ button span {
   background-color: #3adb76;
 }
 
-.countdown-for-panel input, .countdown-to-panel input {
-  min-width: 4rem;
+.countdown-for-panel md-input-container, .countdown-to-panel md-input-container {
+  padding: 0 5px;
+  width: 100%;
+}
+
+.countdown-for-panel label, .countdown-to-panel label {
   margin-left: 5px;
-  margin-right: -5px;
+}
+
+.countdown-for-panel input, .countdown-to-panel input {
+  min-width: 6rem;
 }
 
 .messages-control-container .message-window textarea {
